@@ -5,7 +5,7 @@ namespace Pdflax\Table;
 class PdfTableColumn
 {
 
-    /** @var  FpdfTable */
+    /** @var  PdfTable */
     protected $table;
 
     /**
@@ -34,7 +34,7 @@ class PdfTableColumn
     /**
      * PdfTableColumn constructor.
      *
-     * @param FpdfTable    $table
+     * @param PdfTable     $table
      * @param float        $x
      * @param float|string $w
      * @param array|string $styles

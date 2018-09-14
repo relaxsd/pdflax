@@ -4,7 +4,7 @@ namespace Pdflax;
 
 use Pdflax\Contracts\PdfDocumentInterface;
 
-class FpdfView implements PdfDocumentInterface
+class PdfView implements PdfDocumentInterface
 {
 
     use PdfDOMTrait;
@@ -560,7 +560,7 @@ class FpdfView implements PdfDocumentInterface
     }
 
     /**
-     * @return FpdfView
+     * @return PdfView
      */
     public function raw()
     {

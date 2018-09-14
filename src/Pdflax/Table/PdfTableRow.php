@@ -2,9 +2,9 @@
 
 namespace Pdflax\Table;
 
-use Pdflax\FpdfView;
+use Pdflax\PdfView;
 
-class PdfTableRow extends FpdfView
+class PdfTableRow extends PdfView
 {
 
     // These will be merged with parent document styles (scaled, see FpdfView constructor)
@@ -30,7 +30,7 @@ class PdfTableRow extends FpdfView
         ]
     ];
 
-    /** @var  FpdfTable */
+    /** @var  PdfTable */
     protected $table;
 
     protected $maxChildHeight = 0;
@@ -45,7 +45,7 @@ class PdfTableRow extends FpdfView
     /**
      * PdfTableRow constructor.
      *
-     * @param FpdfTable    $table
+     * @param PdfTable     $table
      * @param float        $h Row height.
      * @param array|string $styles
      */

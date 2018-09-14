@@ -2,10 +2,10 @@
 
 namespace Pdflax\Table;
 
-use Pdflax\FpdfView;
+use Pdflax\PdfView;
 use Pdflax\Helpers\Arr;
 
-class FpdfTable extends FpdfView
+class PdfTable extends PdfView
 {
 
     protected $options = [
