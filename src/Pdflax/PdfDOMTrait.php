@@ -13,7 +13,7 @@ trait PdfDOMTrait
      * @param string       $caption
      * @param array|string $style
      *
-     * @return \Pdflax\Contracts\PdfDocumentInterface
+     * @return $this
      */
     public function h1($caption, $style = [])
     {
@@ -29,7 +29,7 @@ trait PdfDOMTrait
      * @param string       $caption
      * @param array|string $style
      *
-     * @return \Pdflax\Contracts\PdfDocumentInterface
+     * @return $this
      */
     public function h2($caption, $style = [])
     {
@@ -45,7 +45,7 @@ trait PdfDOMTrait
      * @param string       $text
      * @param array|string $style
      *
-     * @return \Pdflax\Contracts\PdfDocumentInterface
+     * @return $this
      */
     public function p($text = '', $style = [])
     {
@@ -64,7 +64,7 @@ trait PdfDOMTrait
      * @param string       $caption
      * @param array|string $style
      *
-     * @return \Pdflax\Contracts\PdfDocumentInterface
+     * @return $this
      */
     public function block($width, $height, $caption, $style = [])
     {

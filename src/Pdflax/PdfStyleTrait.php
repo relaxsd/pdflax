@@ -41,7 +41,7 @@ trait PdfStyleTrait
      * @param array  $styles
      * @param bool   $replace
      *
-     * @return mixed
+     * @return $this
      */
     protected function setStyle($element, array $styles, $replace = false)
     {
