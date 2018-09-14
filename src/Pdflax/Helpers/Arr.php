@@ -23,6 +23,7 @@ class Arr
                     if (is_array($value) && isset($result[$key]) && is_array($result[$key])) {
                         $result[$key] = self::mergeRecursiveConfig($result[$key], $value);
                     } else {
+                        // TODO: This overwrites the old (non-array) value
                         $result[$key] = $value;
                     }
                 } else {
