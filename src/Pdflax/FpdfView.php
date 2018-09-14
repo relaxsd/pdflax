@@ -598,12 +598,17 @@ class FpdfView implements PdfDocumentInterface
 
         if ($newPage != $originalPage) {
 
-            if ($options['multiline'])
-                // \Log::warning("Encountered a Page Breaks in a MultiCells within PDF view. This is not supported.");
+            // if ($options['multiline']) {
+            //     \Log::warning("Encountered a Page Breaks in a MultiCells within PDF view. This is not supported.");
+            // }
 
-                // TODO: Maybe use the page size (minus top/bottom margins)? The view moved one page backwards?
-                $newY = $this->pdf->getCursorY();
-            if ($options['ln'] > 0) $newY -= $globalH;
+            // TODO: Maybe use the page size (minus top/bottom margins)? The view moved one page backwards?
+            $newY = $this->pdf->getCursorY();
+
+            if ($options['ln'] > 0) {
+                $newY -= $globalH;
+            }
+
             $this->y += $newY - $originalY;   // Mostly 0, but sometimes a correction of about -266
 
         }
