@@ -5,6 +5,11 @@ namespace Pdflax\Contracts;
 interface PdfDocumentInterface extends PdfStyleInterface, PdfDOMInterface
 {
 
+    /**
+     * Get the current page number.
+     *
+     * @return int
+     */
     public function getPage();
 
     /**

@@ -417,6 +417,11 @@ class FpdfView implements PdfDocumentInterface
         return $style;
     }
 
+    /**
+     * Get the current page number.
+     *
+     * @return int
+     */
     public function getPage()
     {
         return $this->pdf->getPage();
