@@ -87,8 +87,8 @@ class PdfCreatorRegistry extends PdfCreator
                 ? $this->register->getValue($this->implementation)
                 : $this->register->getDefaultValue();
 
-            /** @var PdfCreatorInterface $pfdCreator */
-            $pfdCreator = new $pfdCreatorClass();
+            // Create a new PfdCreator instance
+            $pfdCreator = $this->createInstance($pfdCreatorClass);
 
             // Use the new instance, merging the options we got before
             return $pfdCreator->create(
@@ -103,8 +103,19 @@ class PdfCreatorRegistry extends PdfCreator
 
         }
 
-
     }
 
+    /**
+     * Creates a new instance for the given classname.
+     * Moved to a separate method for testing purposes.
+     *
+     * @param $pfdCreatorClass
+     *
+     * @return     PdfCreatorInterface $pfdCreator
+     */
+    protected function createInstance($pfdCreatorClass)
+    {
+        return new $pfdCreatorClass();
+    }
 
 }

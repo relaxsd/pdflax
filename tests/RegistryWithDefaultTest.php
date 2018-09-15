@@ -105,9 +105,30 @@ class RegistryWithDefaultTest extends TestCase
     /**
      * @test
      */
-    public function it_registers_a_default_value()
+    public function it_registers_a_default_value_with_register()
     {
         $this->registry->register('key', 'value', true);
+
+        $this->assertEquals($this->registry->getDefaultValue(), 'value');
+    }
+
+    /**
+     * @test
+     */
+    public function it_registers_a_default_value_with_registerDefault()
+    {
+        $this->registry->registerDefault('key', 'value');
+
+        $this->assertEquals($this->registry->getDefaultValue(), 'value');
+    }
+
+    /**
+     * @test
+     */
+    public function it_registers_a_default_value_with_setDefault()
+    {
+        $this->registry->register('key', 'value', false);
+        $this->registry->setDefaultKey('key');
 
         $this->assertEquals($this->registry->getDefaultValue(), 'value');
     }

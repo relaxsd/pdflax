@@ -6,36 +6,45 @@ use PHPUnit\Framework\TestCase;
 class ArrTest extends TestCase
 {
 
-    public function testItReturnAnArrayIfGivenNoParameters()
+    /**
+     * @test
+     */
+    public function it_returns_an_array_if_given_no_parameters()
     {
         $this->assertEquals([], Arr::mergeRecursiveConfig());
     }
 
-    public function testItMergesArrayWithNumericKeys()
+    /**
+     * @test
+     */
+    public function it_merges_arrays_with_numeric_keys()
     {
         $this->assertEquals(
             [
                 'one',
                 'two'
             ],
-            Arr::mergeRecursiveConfig([
-                'one'
-            ], [
-                'two'
-            ]));
+            Arr::mergeRecursiveConfig(
+                ['one'],
+                ['two']
+            )
+        );
     }
 
-    public function testItMergesArraysRecursively()
+    /**
+     * @test
+     */
+    public function it_merges_arrays_recursively()
     {
         $this->assertEquals(
             [
                 'one' => ['a', 'b'],
             ],
-            Arr::mergeRecursiveConfig([
-                'one' => ['a']
-            ], [
-                'one' => ['b']
-            ]));
+            Arr::mergeRecursiveConfig(
+                ['one' => ['a']],
+                ['one' => ['b']]
+            )
+        );
     }
 
 }

@@ -25,9 +25,19 @@ class PdfCreatorTest extends TestCase
      */
     public function it_saves_options()
     {
-        $this->stub->setOption('key', 'value');
+        $this->stub->setOption('key1', 'value1');
+        $this->assertEquals($this->stub->getOption('key1'), 'value1');
+        $this->assertEquals($this->stub->getOptions(), [
+            'key1' => 'value1'
+        ]);
 
-        $this->assertEquals($this->stub->getOption('key'), 'value');
+        $this->stub->setOption('key2', 'value2');
+        $this->assertEquals($this->stub->getOption('key2'), 'value2');
+        $this->assertEquals($this->stub->getOptions(), [
+            'key1' => 'value1',
+            'key2' => 'value2'
+        ]);
+
     }
 
     /**
@@ -70,6 +80,9 @@ class PdfCreatorTest extends TestCase
     {
         $this->stub->pageSizeA4();
         $this->assertEquals($this->stub->getOption('size'), Options::SIZE_A4);
+
+        $this->stub->withPageSize('A6');
+        $this->assertEquals($this->stub->getOption('size'), 'A6');
 
         $this->stub->withPageSize(10, 20);
         $this->assertEquals($this->stub->getOption('size'), [10, 20]);

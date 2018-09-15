@@ -14,9 +14,6 @@ class Arr
 
             $array = array_shift($arrays);
 
-            if (!$array)
-                continue;
-
             foreach ($array as $key => $value) {
 
                 if (is_string($key)) {
