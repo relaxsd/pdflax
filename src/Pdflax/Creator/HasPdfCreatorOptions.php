@@ -22,9 +22,27 @@ trait HasPdfCreatorOptions
      */
     public function setOption($name, $value)
     {
-        $options [$name] = $value;
+        $this->options[$name] = $value;
 
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    /**
+     * @param $name
+     *
+     * @return mixed
+     */
+    public function getOption($name)
+    {
+        return $this->options[$name];
     }
 
     /**
@@ -32,7 +50,7 @@ trait HasPdfCreatorOptions
      */
     public function portrait()
     {
-        $options['orientation'] = PdfCreatoroptionsInterface::ORIENTATION_PORTRAIT;
+        $this->options['orientation'] = PdfCreatoroptionsInterface::ORIENTATION_PORTRAIT;
 
         return $this;
     }
@@ -42,7 +60,7 @@ trait HasPdfCreatorOptions
      */
     public function landscape()
     {
-        $options['orientation'] = PdfCreatorOptionsInterface::ORIENTATION_LANDSCAPE;
+        $this->options['orientation'] = PdfCreatorOptionsInterface::ORIENTATION_LANDSCAPE;
 
         return $this;
     }
@@ -54,7 +72,7 @@ trait HasPdfCreatorOptions
      */
     public function withUnits($units)
     {
-        $options['units'] = $units;
+        $this->options['units'] = $units;
 
         return $this;
     }
@@ -64,7 +82,7 @@ trait HasPdfCreatorOptions
      */
     public function usingMillimeters()
     {
-        $options['units'] = PdfCreatoroptionsInterface::UNIT_MM;
+        $this->options['units'] = PdfCreatoroptionsInterface::UNIT_MM;
 
         return $this;
     }
@@ -74,7 +92,7 @@ trait HasPdfCreatorOptions
      */
     public function usingCentimeters()
     {
-        $options['units'] = PdfCreatoroptionsInterface::UNIT_CM;
+        $this->options['units'] = PdfCreatoroptionsInterface::UNIT_CM;
 
         return $this;
     }
@@ -84,7 +102,7 @@ trait HasPdfCreatorOptions
      */
     public function usingInches()
     {
-        $options['units'] = PdfCreatoroptionsInterface::UNIT_INCH;
+        $this->options['units'] = PdfCreatoroptionsInterface::UNIT_INCH;
 
         return $this;
     }
@@ -94,7 +112,7 @@ trait HasPdfCreatorOptions
      */
     public function usingPoints()
     {
-        $options['units'] = PdfCreatoroptionsInterface::UNIT_PT;
+        $this->options['units'] = PdfCreatoroptionsInterface::UNIT_PT;
 
         return $this;
     }
@@ -104,7 +122,7 @@ trait HasPdfCreatorOptions
      */
     public function pageSizeA4()
     {
-        $options['size'] = PdfCreatoroptionsInterface::SIZE_A4;
+        $this->options['size'] = PdfCreatoroptionsInterface::SIZE_A4;
 
         return $this;
     }
@@ -118,9 +136,9 @@ trait HasPdfCreatorOptions
     public function withPageSize($width, $height = null)
     {
         if (is_string($width)) {
-            $options['size'] = $width;
+            $this->options['size'] = $width;
         } else {
-            $options['size'] = [$width, $height];
+            $this->options['size'] = [$width, $height];
         }
 
         return $this;
