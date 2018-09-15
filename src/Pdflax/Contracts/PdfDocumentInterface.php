@@ -94,7 +94,14 @@ interface PdfDocumentInterface extends PdfStyleInterface, PdfDOMInterface
      */
     public function cell($w, $h = 0.0, $txt = '', $options = []);
 
-    public function setFont($family, $style='', $size=0);
+    /**
+     * @param string $family
+     * @param string $style
+     * @param int    $size
+     *
+     * @return self
+     */
+    public function setFont($family, $style = '', $size = 0);
 
     /**
      * @param string|int|array $r Red value (with $g and $b) or greyscale value ($g and $b null) or color name or [r,g,b] array
@@ -150,6 +157,50 @@ interface PdfDocumentInterface extends PdfStyleInterface, PdfDOMInterface
      * @return mixed
      */
     public function newLine($h = null);
+
+    /**
+     * @param float|string $x
+     * @param float|string $y
+     * @param float|string $w
+     * @param float|string $h
+     * @param array|string $style
+     *
+     * @return self
+     */
+    public function rectangle($x, $y, $w, $h, $style = '');
+
+    /**
+     * @param float|string $x1
+     * @param float|string $y1
+     * @param float|string $x2
+     * @param float|string $y2
+     * @param array|string $style
+     *
+     * @return self
+     */
+    public function line($x1, $y1, $x2, $y2, $style = '');
+
+    /**
+     * @param string       $file
+     * @param float|string $x
+     * @param float|string $y
+     * @param float|string $w
+     * @param float|string $h
+     * @param string       $type
+     * @param string       $link
+     *
+     * @return self
+     */
+    public function image($file, $x, $y, $w, $h, $type = '', $link = '');
+
+    /**
+     * @param float|string $h
+     * @param string       $text
+     * @param string       $link
+     *
+     * @return self
+     */
+    public function write($h, $text, $link = '');
 
     /**
      * @return mixed

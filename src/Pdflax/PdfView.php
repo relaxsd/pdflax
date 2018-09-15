@@ -195,13 +195,13 @@ class PdfView implements PdfDocumentInterface
      * @param float|string $y
      * @param float|string $w
      * @param float|string $h
-     * @param string       $style
+     * @param array|string $style
      *
      * @return self
      */
-    public function Rect($x, $y, $w, $h, $style = '')
+    public function rectangle($x, $y, $w, $h, $style = '')
     {
-        $this->pdf->raw()->Rect($this->moveToGlobal_horz($x), $this->moveToGlobal_vert($y), $this->scaleToGlobal_horz($w), $this->scaleToGlobal_vert($h), $style);
+        $this->pdf->rectangle($this->moveToGlobal_horz($x), $this->moveToGlobal_vert($y), $this->scaleToGlobal_horz($w), $this->scaleToGlobal_vert($h), $style);
 
         return $this;
     }
@@ -213,9 +213,9 @@ class PdfView implements PdfDocumentInterface
      *
      * @return self
      */
-    public function SetFont($family, $style = '', $size = 0)
+    public function setFont($family, $style = '', $size = 0)
     {
-        $this->pdf->raw()->SetFont($family, $style, $this->scaleToGlobal_horz($size));
+        $this->pdf->setFont($family, $style, $this->scaleToGlobal_horz($size));
 
         return $this;
     }
@@ -225,44 +225,45 @@ class PdfView implements PdfDocumentInterface
      * @param float|string $y1
      * @param float|string $x2
      * @param float|string $y2
+     * @param array|string $style
      *
      * @return self
      */
-    public function Line($x1, $y1, $x2, $y2)
+    public function line($x1, $y1, $x2, $y2, $style = '')
     {
-        $this->pdf->raw()->Line($this->moveToGlobal_horz($x1), $this->moveToGlobal_vert($y1), $this->moveToGlobal_horz($x2), $this->moveToGlobal_vert($y2));
+        $this->pdf->line($this->moveToGlobal_horz($x1), $this->moveToGlobal_vert($y1), $this->moveToGlobal_horz($x2), $this->moveToGlobal_vert($y2), $style);
 
         return $this;
     }
 
     /**
      * @param float|string $h
-     * @param string       $txt
+     * @param string       $text
      * @param string       $link
      *
      * @return self
      */
-    public function Write($h, $txt, $link = '')
+    public function write($h, $text, $link = '')
     {
-        $this->pdf->raw()->Write($this->scaleToGlobal_vert($h), $txt, $link);
+        $this->pdf->write($this->scaleToGlobal_vert($h), $text, $link);
 
         return $this;
     }
 
     /**
-     * @param                   $file
-     * @param float|string|null $x
-     * @param float|string|null $y
-     * @param float|string      $w
-     * @param float|string      $h
-     * @param string            $type
-     * @param string            $link
+     * @param string       $file
+     * @param float|string $x
+     * @param float|string $y
+     * @param float|string $w
+     * @param float|string $h
+     * @param string       $type
+     * @param string       $link
      *
      * @return self
      */
-    public function Image($file, $x = null, $y = null, $w = 0.0, $h = 0.0, $type = '', $link = '')
+    public function image($file, $x, $y, $w, $h, $type = '', $link = '')
     {
-        $this->pdf->raw()->Image($file, $this->moveToGlobal_horz($x), $this->moveToGlobal_vert($y), $this->scaleToGlobal_horz($w), $this->scaleToGlobal_vert($h), $type, $link);
+        $this->pdf->image($file, $this->moveToGlobal_horz($x), $this->moveToGlobal_vert($y), $this->scaleToGlobal_horz($w), $this->scaleToGlobal_vert($h), $type, $link);
 
         return $this;
     }
