@@ -354,17 +354,19 @@ class PdfViewTest extends TestCase
     {
 
         $this->pdfMock
-            ->expects($this->exactly(3))
+            ->expects($this->exactly(4))
             ->method('addPage')
             ->withConsecutive(
                 [],
-                [PdfCreatorOptionsInterface::SIZE_A4],
-                [[100, 200], PdfCreatorOptionsInterface::ORIENTATION_LANDSCAPE]
+                [PdfCreatorOptionsInterface::ORIENTATION_LANDSCAPE],
+                [null, PdfCreatorOptionsInterface::SIZE_A4],
+                [PdfCreatorOptionsInterface::ORIENTATION_PORTRAIT, [100, 200]]
             );
 
         $self = $this->pdfView->addPage();
-        $this->pdfView->addPage(PdfCreatorOptionsInterface::SIZE_A4);
-        $this->pdfView->addPage([100, 200], PdfCreatorOptionsInterface::ORIENTATION_LANDSCAPE);
+        $this->pdfView->addPage(PdfCreatorOptionsInterface::ORIENTATION_LANDSCAPE);
+        $this->pdfView->addPage(null, PdfCreatorOptionsInterface::SIZE_A4);
+        $this->pdfView->addPage(PdfCreatorOptionsInterface::ORIENTATION_PORTRAIT, [100, 200]);
 
         // Assert fluent interface
         $this->assertSame($this->pdfView, $self);
