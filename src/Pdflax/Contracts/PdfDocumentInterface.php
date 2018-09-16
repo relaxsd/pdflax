@@ -2,7 +2,7 @@
 
 namespace Pdflax\Contracts;
 
-interface PdfDocumentInterface extends PdfStyleInterface, PdfDOMInterface
+interface PdfDocumentInterface extends PdfStyleInterface, PdfDOMInterface, PdfMarginInterface
 {
 
     /**
@@ -77,16 +77,6 @@ interface PdfDocumentInterface extends PdfStyleInterface, PdfDOMInterface
     public function setCursorXY($x, $y);
 
     /**
-     * @return float
-     */
-    public function getLeftMargin();
-
-    /**
-     * @return float
-     */
-    public function getRightMargin();
-
-    /**
      * @param float|string $w
      * @param float|string $h
      * @param string       $txt
@@ -144,19 +134,24 @@ interface PdfDocumentInterface extends PdfStyleInterface, PdfDOMInterface
     public function addPage();
 
     /**
-     * @param string $name
-     * @param string $dest
+     * @param string $fileName
      *
      * @return PdfDocumentInterface
      */
-    public function output($name = '', $dest = '');
+    public function save($fileName);
 
     /**
-     * @param float|null $h
+     * @return string
+     */
+    public function getPdfContent();
+
+    /**
+     * @param int  $n
+     * @param array|null $options
      *
      * @return mixed
      */
-    public function newLine($h = null);
+    public function newLine($n = 1, $options = null);
 
     /**
      * @param float|string $x

@@ -2,13 +2,13 @@
 
 namespace Pdflax\Contracts;
 
-interface PdfDOMInterface extends PdfStyleInterface
+interface PdfDOMInterface
 {
 
     /**
      * @param float $value
      *
-     * @return string
+     * @return PdfDocumentInterface
      */
     public function euro($value);
 

@@ -2,7 +2,6 @@
 
 namespace Pdflax;
 
-
 /**
  * Class PdfDOMTrait
  */
@@ -22,7 +21,7 @@ trait PdfDOMTrait
         $width = $this->getWidth() - $this->getLeftMargin() - $this->getRightMargin();
 
         // TODO: Use $this->fpdf->FontSizePt?
-        return $this->block($width, 8, $caption,['h1', $style]);
+        return $this->block($width, 8, $caption, ['h1', $style]);
     }
 
     /**
@@ -59,8 +58,8 @@ trait PdfDOMTrait
     }
 
     /**
-     * @param float|string       $width
-     * @param float|string        $height
+     * @param float|string $width
+     * @param float|string $height
      * @param string       $caption
      * @param array|string $style
      *

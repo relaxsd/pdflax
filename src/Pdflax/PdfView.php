@@ -9,6 +9,7 @@ class PdfView implements PdfDocumentInterface
 
     use PdfDOMTrait;
     use PdfStyleTrait;
+    use PdfMarginTrait;
 
     // These will be merged with parent document styles (scaled, see FpdfView constructor)
     // Subclasses can define their own styles to be merged.
@@ -42,16 +43,6 @@ class PdfView implements PdfDocumentInterface
      * @var float
      */
     protected $localHeight;
-
-    /**
-     * @var float
-     */
-    protected $leftMargin = 0;
-
-    /**
-     * @var float
-     */
-    protected $rightMargin = 0;
 
     /**
      * PdfScaler constructor.
@@ -102,36 +93,25 @@ class PdfView implements PdfDocumentInterface
     /**
      * @param float $w
      * @param float $h
+     * @param bool  $adjustStyles
      *
      * @return self
      */
-    public function setReferenceSize($w, $h)
+    public function setReferenceSize($w, $h, $adjustStyles = true)
     {
+        if ($adjustStyles) {
+
+            array_walk($this->stylesheet, function (&$elementStyles) use ($w, $h){
+                $elementStyles = $this->scaleStyle($elementStyles, $w / $this->localWidth, $h / $this->localHeight);
+            });
+
+        }
+
         $this->localWidth  = $w;
         $this->localHeight = $h;
 
         return $this;
     }
-
-    // ---------------------------- FPDF-like function:
-
-    /**
-     * @return float
-     */
-    public function getLeftMargin()
-    {
-        return $this->leftMargin;
-    }
-
-    /**
-     * @return float
-     */
-    public function getRightMargin()
-    {
-        return $this->rightMargin;
-    }
-
-    // -----------
 
     /**
      * Position the 'cursor' at a given X
@@ -195,7 +175,7 @@ class PdfView implements PdfDocumentInterface
      * @param float|string $y
      * @param float|string $w
      * @param float|string $h
-     * @param array|string $style
+     * @param string       $style
      *
      * @return self
      */
@@ -276,7 +256,7 @@ class PdfView implements PdfDocumentInterface
     protected function moveToGlobal_horz($localX)
     {
 
-        if (is_null($localX)) return $localX;
+        if (is_null($localX)) return null;
 
         // Need to evaluate this now to do the add
         $localX = $this->eval_view_horz($localX);
@@ -293,7 +273,7 @@ class PdfView implements PdfDocumentInterface
      */
     protected function moveToGlobal_vert($localY)
     {
-        if (is_null($localY)) return $localY;
+        if (is_null($localY)) return null;
 
         // Need to evaluate this now to do the add
         $localY = $this->eval_view_vert($localY);
@@ -310,7 +290,7 @@ class PdfView implements PdfDocumentInterface
      */
     protected function moveToLocal_horz($globalX)
     {
-        return ($globalX - $this->getX()) * $this->scale_horz();
+        return self::scale($globalX - $this->getX(), $this->scale_horz());
     }
 
     /**
@@ -320,7 +300,7 @@ class PdfView implements PdfDocumentInterface
      */
     protected function moveToLocal_vert($globalY)
     {
-        return ($globalY - $this->getY()) * $this->scale_vert();
+        return self::scale($globalY - $this->getY(), $this->scale_vert());
     }
 
     /**
@@ -330,9 +310,7 @@ class PdfView implements PdfDocumentInterface
      */
     protected function scaleToGlobal_horz($localW)
     {
-        if (is_null($localW)) return $localW;
-
-        return $this->eval_view_horz($localW) / $this->scale_horz();
+        return self::scale($this->eval_view_horz($localW), 1 / $this->scale_horz());
     }
 
     /**
@@ -342,9 +320,7 @@ class PdfView implements PdfDocumentInterface
      */
     protected function scaleToGlobal_vert($localH)
     {
-        if (is_null($localH)) return $localH;
-
-        return $this->eval_view_vert($localH) / $this->scale_vert();
+        return self::scale($this->eval_view_vert($localH), 1 / $this->scale_vert());
     }
 
     /**
@@ -354,10 +330,8 @@ class PdfView implements PdfDocumentInterface
      */
     protected function scaleToLocal_horz($globalW)
     {
-        if (is_null($globalW)) return $globalW;
-
-        // TODO: No support for 'n%'
-        return $globalW * $this->scale_horz();
+        // TODO: No support for 'n%' like scaleToGlobal_horz?
+        return self::scale($globalW, $this->scale_horz());
     }
 
     /**
@@ -367,10 +341,21 @@ class PdfView implements PdfDocumentInterface
      */
     protected function scaleToLocal_vert($globalH)
     {
-        if (is_null($globalH)) return $globalH;
+        // TODO: No support for 'n%' like scaleToGlobal_vert?
+        return self::scale($globalH, $this->scale_vert());
+    }
 
-        // TODO: No support for 'n%'
-        return $globalH * $this->scale_vert();
+    /**
+     * @param float|null $value
+     * @param float      $factor
+     *
+     * @return float|null
+     */
+    protected static function scale($value, $factor)
+    {
+        if (is_null($value)) return null;
+
+        return $value * $factor;
     }
 
     /**
@@ -400,20 +385,30 @@ class PdfView implements PdfDocumentInterface
      */
     protected function toGlobalStyle(array $style)
     {
-        $result = $style;
-
-        if (array_key_exists('font-size', $result)) $result['font-size'] = $this->scaleToGlobal_vert($result['font-size']);
-
-        return $result;
+        return self::scaleStyle($style, 1/$this->scale_horz(), 1/$this->scale_vert());
     }
 
     protected function toLocalStyle(array $style)
     {
-        if (array_key_exists('font-size', $style))
-            $style['font-size'] = $this->scaleToLocal_horz($style['font-size']);
+        return self::scaleStyle($style, $this->scale_horz(), $this->scale_vert());
+    }
 
-        if (array_key_exists('border-size', $style))
-            $style['border-size'] = $this->scaleToLocal_horz($style['border-size']);
+    /**
+     * @param array $style
+     * @param float $factorHorz
+     * @param float $factorVert
+     *
+     * @return array
+     */
+    protected function scaleStyle(array $style, $factorHorz, $factorVert)
+    {
+        if (array_key_exists('font-size', $style)) {
+            $style['font-size'] = self::scale($style['font-size'], $factorVert);
+        }
+
+        if (array_key_exists('border-size', $style)) {
+            $style['border-size'] = self::scale($style['border-size'], $factorVert);
+        }
 
         return $style;
     }
@@ -565,18 +560,19 @@ class PdfView implements PdfDocumentInterface
      */
     public function raw()
     {
-
-        return $this;
+        return $this->pdf->raw();
     }
 
     /**
      * @param float $value
      *
-     * @return string
+     * @return PdfDocumentInterface
      */
     public function euro($value)
     {
-        return $this->pdf->euro($value);
+        $this->pdf->euro($value);
+
+        return $this;
     }
 
     /**
@@ -626,7 +622,7 @@ class PdfView implements PdfDocumentInterface
      * @param int|null         $g Green value
      * @param int|null         $b Blue value
      *
-     * @return mixed
+     * @return PdfDocumentInterface
      */
     public function setDrawColor($r, $g = null, $b = null)
     {
@@ -640,7 +636,7 @@ class PdfView implements PdfDocumentInterface
      * @param int|null         $g Green value
      * @param int|null         $b Blue value
      *
-     * @return mixed
+     * @return PdfDocumentInterface
      */
     public function setTextColor($r, $g = null, $b = null)
     {
@@ -654,7 +650,7 @@ class PdfView implements PdfDocumentInterface
      * @param int|null         $g Green value
      * @param int|null         $b Blue value
      *
-     * @return mixed
+     * @return PdfDocumentInterface
      */
     public function setFillColor($r, $g = null, $b = null)
     {
@@ -687,26 +683,34 @@ class PdfView implements PdfDocumentInterface
     }
 
     /**
-     * @param string $name
-     * @param string $dest
+     * @param string $fileName
      *
      * @return PdfDocumentInterface
      */
-    public function output($name = '', $dest = '')
+    public function save($fileName)
     {
-        $this->pdf->output($name, $dest);
+        $this->pdf->save($fileName);
 
         return $this;
     }
 
     /**
-     * @param float|null $h
+     * @return string
+     */
+    public function getPdfContent()
+    {
+        return $this->pdf->getPdfContent();
+    }
+
+    /**
+     * @param int        $n
+     * @param array|null $options
      *
      * @return mixed
      */
-    public function newLine($h = null)
+    public function newLine($n = 1, $options = null)
     {
-        $this->pdf->newLine();
+        $this->pdf->newLine($n, $options);
 
         return $this;
     }
