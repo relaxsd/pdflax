@@ -5,6 +5,11 @@ namespace Pdflax\Contracts;
 interface PdfDocumentInterface extends PdfStyleInterface, PdfDOMInterface, PdfMarginInterface
 {
 
+    const FONT_STYLE_NORMAL = 0x000;
+    const FONT_STYLE_BOLD = 0x001;
+    const FONT_STYLE_ITALIC = 0x010;
+    const FONT_STYLE_UNDERLINE = 0x100;
+
     /**
      * Get the current page number.
      *
@@ -86,12 +91,12 @@ interface PdfDocumentInterface extends PdfStyleInterface, PdfDOMInterface, PdfMa
 
     /**
      * @param string $family
-     * @param string $style
+     * @param int    $style
      * @param int    $size
      *
      * @return self
      */
-    public function setFont($family, $style = '', $size = 0);
+    public function setFont($family, $style = self::FONT_STYLE_NORMAL, $size = 0);
 
     /**
      * @param string|int|array $r Red value (with $g and $b) or greyscale value ($g and $b null) or color name or [r,g,b] array
@@ -146,7 +151,7 @@ interface PdfDocumentInterface extends PdfStyleInterface, PdfDOMInterface, PdfMa
     public function getPdfContent();
 
     /**
-     * @param int  $n
+     * @param int        $n
      * @param array|null $options
      *
      * @return mixed

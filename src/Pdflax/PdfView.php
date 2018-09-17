@@ -188,12 +188,12 @@ class PdfView implements PdfDocumentInterface
 
     /**
      * @param string $family
-     * @param string $style
+     * @param int    $style
      * @param int    $size
      *
      * @return self
      */
-    public function setFont($family, $style = '', $size = 0)
+    public function setFont($family, $style = self::FONT_STYLE_NORMAL, $size = 0)
     {
         $this->pdf->setFont($family, $style, $this->scaleToGlobal_horz($size));
 

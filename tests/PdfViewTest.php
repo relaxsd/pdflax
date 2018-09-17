@@ -251,9 +251,9 @@ class PdfViewTest extends TestCase
         $this->pdfMock
             ->expects($this->once())
             ->method('setFont')
-            ->with('FILE', 'STYLE', 2.5);
+            ->with('FILE', PdfView::FONT_STYLE_BOLD, 2.5);
 
-        $self = $this->pdfView->setFont('FILE', 'STYLE', 10);
+        $self = $this->pdfView->setFont('FILE', PdfView::FONT_STYLE_BOLD, 10);
 
         // Assert fluent interface
         $this->assertSame($this->pdfView, $self);
