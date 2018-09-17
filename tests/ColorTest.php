@@ -29,7 +29,7 @@ class ColorTest extends TestCase
     /**
      * @test
      */
-    public function it_transates_r_to_greyscale()
+    public function it_translates_r_to_greyscale()
     {
         $this->assertEquals([0, 0, 0], Color::toRGB(0));
         $this->assertEquals([127, 127, 127], Color::toRGB(127));
