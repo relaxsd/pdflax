@@ -673,11 +673,15 @@ class PdfView implements PdfDocumentInterface
     }
 
     /**
+     * @param string|null $size
+     * @param string|null $orientation
+     *
      * @return PdfDocumentInterface
+     * @throws \Pdflax\Exceptions\UnsupportedFeatureException
      */
-    public function addPage()
+    public function addPage($size = null, $orientation = null)
     {
-        $this->pdf->addPage();
+        $this->pdf->addPage($size, $orientation);
 
         return $this;
     }

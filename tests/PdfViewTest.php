@@ -1,5 +1,6 @@
 <?php
 
+use Pdflax\Contracts\PdfCreatorOptionsInterface;
 use Pdflax\PdfView;
 use PHPUnit\Framework\TestCase;
 
@@ -353,10 +354,17 @@ class PdfViewTest extends TestCase
     {
 
         $this->pdfMock
-            ->expects($this->once())
-            ->method('addPage');
+            ->expects($this->exactly(3))
+            ->method('addPage')
+            ->withConsecutive(
+                [],
+                [PdfCreatorOptionsInterface::SIZE_A4],
+                [[100, 200], PdfCreatorOptionsInterface::ORIENTATION_LANDSCAPE]
+            );
 
         $self = $this->pdfView->addPage();
+        $this->pdfView->addPage(PdfCreatorOptionsInterface::SIZE_A4);
+        $this->pdfView->addPage([100, 200], PdfCreatorOptionsInterface::ORIENTATION_LANDSCAPE);
 
         // Assert fluent interface
         $this->assertSame($this->pdfView, $self);

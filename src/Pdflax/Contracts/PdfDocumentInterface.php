@@ -134,9 +134,13 @@ interface PdfDocumentInterface extends PdfStyleInterface, PdfDOMInterface, PdfMa
     public function setAutoPageBreak($auto, $margin = 0);
 
     /**
+     * @param string|null $size
+     * @param string|null $orientation
+     *
      * @return PdfDocumentInterface
+     * @throws \Pdflax\Exceptions\UnsupportedFeatureException
      */
-    public function addPage();
+    public function addPage($size = null, $orientation = null);
 
     /**
      * @param string $fileName
