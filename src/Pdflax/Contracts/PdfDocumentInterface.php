@@ -63,6 +63,8 @@ interface PdfDocumentInterface extends PdfStyleInterface, PdfDOMInterface, PdfMa
      * Position the 'cursor' at a given X
      *
      * @param float|string $x Local X-coordinate
+     *
+     * @return self
      */
     public function setCursorX($x);
 
@@ -70,6 +72,8 @@ interface PdfDocumentInterface extends PdfStyleInterface, PdfDOMInterface, PdfMa
      * Position the 'cursor' at a given Y
      *
      * @param float|string $y Local Y-coordinate
+     *
+     * @return self
      */
     public function setCursorY($y);
 
@@ -78,6 +82,8 @@ interface PdfDocumentInterface extends PdfStyleInterface, PdfDOMInterface, PdfMa
      *
      * @param float|string $x Local X-coordinate
      * @param float|string $y Local Y-coordinate
+     *
+     * @return self
      */
     public function setCursorXY($x, $y);
 
@@ -103,7 +109,7 @@ interface PdfDocumentInterface extends PdfStyleInterface, PdfDOMInterface, PdfMa
      * @param int|null         $g Green value
      * @param int|null         $b Blue value
      *
-     * @return mixed
+     * @return self
      */
     public function setDrawColor($r, $g = null, $b = null);
 
@@ -112,7 +118,7 @@ interface PdfDocumentInterface extends PdfStyleInterface, PdfDOMInterface, PdfMa
      * @param int|null         $g Green value
      * @param int|null         $b Blue value
      *
-     * @return mixed
+     * @return self
      */
     public function setTextColor($r, $g = null, $b = null);
 
@@ -121,7 +127,7 @@ interface PdfDocumentInterface extends PdfStyleInterface, PdfDOMInterface, PdfMa
      * @param int|null         $g Green value
      * @param int|null         $b Blue value
      *
-     * @return mixed
+     * @return self
      */
     public function setFillColor($r, $g = null, $b = null);
 
@@ -129,7 +135,7 @@ interface PdfDocumentInterface extends PdfStyleInterface, PdfDOMInterface, PdfMa
      * @param     $auto
      * @param int $margin
      *
-     * @return PdfDocumentInterface
+     * @return self
      */
     public function setAutoPageBreak($auto, $margin = 0);
 
@@ -137,7 +143,7 @@ interface PdfDocumentInterface extends PdfStyleInterface, PdfDOMInterface, PdfMa
      * @param string|null $orientation
      * @param string|null $size
      *
-     * @return PdfDocumentInterface
+     * @return self
      * @throws \Pdflax\Exceptions\UnsupportedFeatureException
      */
     public function addPage($orientation = null, $size = null);
@@ -145,7 +151,7 @@ interface PdfDocumentInterface extends PdfStyleInterface, PdfDOMInterface, PdfMa
     /**
      * @param string $fileName
      *
-     * @return PdfDocumentInterface
+     * @return self
      */
     public function save($fileName);
 

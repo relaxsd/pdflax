@@ -566,7 +566,7 @@ class PdfView implements PdfDocumentInterface
     /**
      * @param float $value
      *
-     * @return PdfDocumentInterface
+     * @return self
      */
     public function euro($value)
     {
@@ -622,7 +622,7 @@ class PdfView implements PdfDocumentInterface
      * @param int|null         $g Green value
      * @param int|null         $b Blue value
      *
-     * @return PdfDocumentInterface
+     * @return self
      */
     public function setDrawColor($r, $g = null, $b = null)
     {
@@ -636,7 +636,7 @@ class PdfView implements PdfDocumentInterface
      * @param int|null         $g Green value
      * @param int|null         $b Blue value
      *
-     * @return PdfDocumentInterface
+     * @return self
      */
     public function setTextColor($r, $g = null, $b = null)
     {
@@ -650,7 +650,7 @@ class PdfView implements PdfDocumentInterface
      * @param int|null         $g Green value
      * @param int|null         $b Blue value
      *
-     * @return PdfDocumentInterface
+     * @return self
      */
     public function setFillColor($r, $g = null, $b = null)
     {
@@ -663,7 +663,7 @@ class PdfView implements PdfDocumentInterface
      * @param     $auto
      * @param int $margin
      *
-     * @return PdfDocumentInterface
+     * @return self
      */
     public function setAutoPageBreak($auto, $margin = 0)
     {
@@ -676,7 +676,7 @@ class PdfView implements PdfDocumentInterface
      * @param string|null $orientation
      * @param string|null $size
      *
-     * @return PdfDocumentInterface
+     * @return self
      * @throws \Pdflax\Exceptions\UnsupportedFeatureException
      */
     public function addPage($orientation = null, $size = null)
@@ -689,7 +689,7 @@ class PdfView implements PdfDocumentInterface
     /**
      * @param string $fileName
      *
-     * @return PdfDocumentInterface
+     * @return self
      */
     public function save($fileName)
     {
