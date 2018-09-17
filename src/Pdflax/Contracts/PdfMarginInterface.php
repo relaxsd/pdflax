@@ -8,7 +8,7 @@ interface PdfMarginInterface
     /**
      * @param $leftMargin
      *
-     * @return $this
+     * @return self
      */
     public function setLeftMargin($leftMargin);
 
@@ -18,11 +18,11 @@ interface PdfMarginInterface
     public function getLeftMargin();
 
     /**
-     * @param $leftMargin
+     * @param $rightMargin
      *
-     * @return $this
+     * @return self
      */
-    public function setRightMargin($leftMargin);
+    public function setRightMargin($rightMargin);
 
     /**
      * @return float
