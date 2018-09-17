@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Martijn
- * Date: 17-9-2018
- * Time: 14:30
- */
 
 namespace Pdflax;
 
@@ -25,13 +19,38 @@ class Color
     ];
 
     /**
+     * @param string|int|array $r Red value (with $g and $b) or greyscale value ($g and $b null) or color name or [r,g,b] array
+     * @param int|null         $g Green value
+     * @param int|null         $b Blue value
+     *
+     * @return mixed
+     */
+    public static function toRGB($r, $g = null, $b = null)
+    {
+
+        if (is_array($r)) {
+            // Does not work for less than 3 elements
+            //list($r, $g, $b) = $r;
+            return call_user_func_array(['Pdflax\Color', 'toRGB'], $r);
+        } else if (is_string($r)) {
+            return self::getColorFromTable($r);
+        } else if (is_int($r)) {
+            return isset($g)
+                ? [$r, $g, $b]
+                : [$r, $r, $r];
+        }
+
+        return null;
+    }
+
+    /**
      * @param $color
      *
      * @return array|null
      */
-    public static function toRGB($color)
+    public static function getColorFromTable($color)
     {
-        return array_key_exists($color, self::$COLORS)
+        return (array_key_exists($color, self::$COLORS))
             ? self::$COLORS[$color]
             : null;
     }
