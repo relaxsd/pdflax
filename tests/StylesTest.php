@@ -1,6 +1,5 @@
 <?php
 
-use Pdflax\Style\Style;
 use Pdflax\Style\Styles;
 use Pdflax\Style\Stylesheet;
 use PHPUnit\Framework\TestCase;
