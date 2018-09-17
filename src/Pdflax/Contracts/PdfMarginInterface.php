@@ -17,4 +17,16 @@ interface PdfMarginInterface
      */
     public function getLeftMargin();
 
+    /**
+     * @param $leftMargin
+     *
+     * @return $this
+     */
+    public function setRightMargin($leftMargin);
+
+    /**
+     * @return float
+     */
+    public function getRightMargin();
+
 }
