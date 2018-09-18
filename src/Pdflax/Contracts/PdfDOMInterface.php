@@ -6,13 +6,6 @@ interface PdfDOMInterface
 {
 
     /**
-     * @param float $value
-     *
-     * @return PdfDocumentInterface
-     */
-    public function euro($value);
-
-    /**
      * @param string       $caption
      * @param array|string $style
      *

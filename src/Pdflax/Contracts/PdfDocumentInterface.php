@@ -2,7 +2,7 @@
 
 namespace Pdflax\Contracts;
 
-interface PdfDocumentInterface extends PdfStyleInterface, PdfDOMInterface, PdfMarginInterface
+interface PdfDocumentInterface extends PdfStyleInterface, PdfDOMInterface, PdfMarginInterface, PdfFormattingInterface
 {
 
     const FONT_STYLE_NORMAL = 0x000;

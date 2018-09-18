@@ -564,18 +564,6 @@ class PdfView implements PdfDocumentInterface
     }
 
     /**
-     * @param float $value
-     *
-     * @return self
-     */
-    public function euro($value)
-    {
-        $this->pdf->euro($value);
-
-        return $this;
-    }
-
-    /**
      * @param float|string $w
      * @param float|string $h
      * @param string       $txt
@@ -734,6 +722,16 @@ class PdfView implements PdfDocumentInterface
                 : $elementStyle;
         }
         return $stylesheet;
+    }
+
+    /**
+     * @param array|null $options
+     *
+     * @return \Pdflax\Contracts\CurrencyFormatterInterface
+     */
+    public function getCurrencyFormatter($options = [])
+    {
+        return $this->pdf->getCurrencyFormatter($options);
     }
 
 }

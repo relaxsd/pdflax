@@ -1,5 +1,6 @@
 <?php
 
+use Pdflax\Contracts\CurrencyFormatterInterface;
 use Pdflax\Contracts\PdfCreatorOptionsInterface;
 use Pdflax\PdfView;
 use PHPUnit\Framework\TestCase;
@@ -333,18 +334,22 @@ class PdfViewTest extends TestCase
     /**
      * @test
      */
-    public function it_draw_a_euro_symbol()
+    public function it_return_a_currency_formatter()
     {
+
+        $options = [
+            CurrencyFormatterInterface::OPTION_EURO_SYMBOL => 'EUR'
+        ];
 
         $this->pdfMock
             ->expects($this->once())
-            ->method('euro')
-            ->with(5);
+            ->method('getCurrencyFormatter')
+            ->with($options)
+            ->willReturn('FORMATTER');
 
-        $self = $this->pdfView->euro(5);
+        $currencyFormatter = $this->pdfView->getCurrencyFormatter($options);
 
-        // Assert fluent interface
-        $this->assertSame($this->pdfView, $self);
+        $this->assertEquals('FORMATTER', $currencyFormatter);
     }
 
     /**
