@@ -5,6 +5,10 @@ namespace Pdflax\Contracts;
 interface PdfDocumentInterface extends PdfStyleInterface, PdfDOMInterface, PdfMarginInterface, PdfFormattingInterface
 {
 
+    const RECT_STYLE_BORDER = 0x001;
+    const RECT_STYLE_FILL = 0x01;
+    const RECT_STYLE_BORDER_AND_FILL = 0x011; // Both
+
     const FONT_STYLE_NORMAL = 0x000;
     const FONT_STYLE_BOLD = 0x001;
     const FONT_STYLE_ITALIC = 0x010;
