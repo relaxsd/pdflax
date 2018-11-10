@@ -8,7 +8,7 @@ class RegistryWithDefaultTest extends TestCase
     /**
      * The test subject
      *
-     * @var \Pdflax\Registry\RegistryWithDefault
+     * @var \Relaxsd\Pdflax\Registry\RegistryWithDefault
      */
     protected $registry;
 
@@ -16,12 +16,12 @@ class RegistryWithDefaultTest extends TestCase
     {
         parent::setUp();
 
-        $this->registry = new \Pdflax\Registry\RegistryWithDefault();
+        $this->registry = new \Relaxsd\Pdflax\Registry\RegistryWithDefault();
     }
 
     /**
      * @test
-     * @expectedException \Pdflax\Registry\RegistryException
+     * @expectedException \Relaxsd\Pdflax\Registry\RegistryException
      */
     public function it_excepts_when_key_is_missing()
     {
@@ -30,7 +30,7 @@ class RegistryWithDefaultTest extends TestCase
 
     /**
      * @test
-     * @expectedException \Pdflax\Registry\RegistryException
+     * @expectedException \Relaxsd\Pdflax\Registry\RegistryException
      */
     public function it_excepts_when_no_values_are_present()
     {
@@ -39,7 +39,7 @@ class RegistryWithDefaultTest extends TestCase
 
     /**
      * @test
-     * @expectedException \Pdflax\Registry\RegistryException
+     * @expectedException \Relaxsd\Pdflax\Registry\RegistryException
      */
     public function it_excepts_when_key_is_not_found()
     {
@@ -74,7 +74,7 @@ class RegistryWithDefaultTest extends TestCase
 
     /**
      * @test
-     * @expectedException \Pdflax\Registry\RegistryException
+     * @expectedException \Relaxsd\Pdflax\Registry\RegistryException
      */
     public function it_excepts_when_there_is_no_default_key()
     {
@@ -83,7 +83,7 @@ class RegistryWithDefaultTest extends TestCase
 
     /**
      * @test
-     * @expectedException \Pdflax\Registry\RegistryException
+     * @expectedException \Relaxsd\Pdflax\Registry\RegistryException
      */
     public function it_excepts_when_a_value_is_not_registered_as_default()
     {

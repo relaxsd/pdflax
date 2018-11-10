@@ -1,7 +1,7 @@
 <?php
 
-use Pdflax\Style\Styles;
-use Pdflax\Style\Stylesheet;
+use Relaxsd\Pdflax\Style\Styles;
+use Relaxsd\Pdflax\Style\Stylesheet;
 use PHPUnit\Framework\TestCase;
 
 class StylesTest extends TestCase
@@ -10,14 +10,14 @@ class StylesTest extends TestCase
     /**
      * The test subject
      *
-     * @var \Pdflax\Style\Styles
+     * @var \Relaxsd\Pdflax\Style\Styles
      */
     protected $styles;
 
     /**
      * A Stylesheet mock object
      *
-     * @var \Pdflax\Style\Stylesheet|PHPUnit_Framework_MockObject_MockObject
+     * @var \Relaxsd\Pdflax\Style\Stylesheet|PHPUnit_Framework_MockObject_MockObject
      */
     protected $stylesheetMock;
 
@@ -25,7 +25,7 @@ class StylesTest extends TestCase
     {
         parent::setUp();
 
-        $this->stylesheetMock = $this->getMockBuilder('Pdflax\Style\Stylesheet')->getMock();
+        $this->stylesheetMock = $this->getMockBuilder('Relaxsd\Pdflax\Style\Stylesheet')->getMock();
         $this->styles         = new Styles($this->stylesheetMock);
     }
 

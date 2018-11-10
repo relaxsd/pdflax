@@ -1,7 +1,7 @@
 <?php
 
-use Pdflax\Contracts\CurrencyFormatterInterface;
-use Pdflax\Helpers\CurrencyFormatter;
+use Relaxsd\Pdflax\Contracts\CurrencyFormatterInterface;
+use Relaxsd\Pdflax\Helpers\CurrencyFormatter;
 use PHPUnit\Framework\TestCase;
 
 class CurrencyFormatterTest extends TestCase
@@ -10,7 +10,7 @@ class CurrencyFormatterTest extends TestCase
     /**
      * The test subject
      *
-     * @var \Pdflax\Helpers\CurrencyFormatter
+     * @var \Relaxsd\Pdflax\Helpers\CurrencyFormatter
      */
     protected $currencyFormatter;
 

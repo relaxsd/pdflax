@@ -1,6 +1,6 @@
 <?php
 
-use Pdflax\Color;
+use Relaxsd\Pdflax\Color;
 use PHPUnit\Framework\TestCase;
 
 class ColorTest extends TestCase

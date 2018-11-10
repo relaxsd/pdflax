@@ -1,6 +1,6 @@
 <?php
 
-use Pdflax\Helpers\Arr;
+use Relaxsd\Pdflax\Helpers\Arr;
 use PHPUnit\Framework\TestCase;
 
 class ArrTest extends TestCase

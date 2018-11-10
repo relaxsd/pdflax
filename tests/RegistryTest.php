@@ -8,7 +8,7 @@ class RegistryTest extends TestCase
     /**
      * The test subject
      *
-     * @var \Pdflax\Registry\Registry
+     * @var \Relaxsd\Pdflax\Registry\Registry
      */
     protected $registry;
 
@@ -16,12 +16,12 @@ class RegistryTest extends TestCase
     {
         parent::setUp();
 
-        $this->registry = new \Pdflax\Registry\Registry();
+        $this->registry = new \Relaxsd\Pdflax\Registry\Registry();
     }
 
     /**
      * @test
-     * @expectedException \Pdflax\Registry\RegistryException
+     * @expectedException \Relaxsd\Pdflax\Registry\RegistryException
      */
     public function it_excepts_when_key_is_missing()
     {
@@ -30,7 +30,7 @@ class RegistryTest extends TestCase
 
     /**
      * @test
-     * @expectedException \Pdflax\Registry\RegistryException
+     * @expectedException \Relaxsd\Pdflax\Registry\RegistryException
      */
     public function it_excepts_when_no_values_are_present()
     {
@@ -39,7 +39,7 @@ class RegistryTest extends TestCase
 
     /**
      * @test
-     * @expectedException \Pdflax\Registry\RegistryException
+     * @expectedException \Relaxsd\Pdflax\Registry\RegistryException
      */
     public function it_excepts_when_key_is_not_found()
     {

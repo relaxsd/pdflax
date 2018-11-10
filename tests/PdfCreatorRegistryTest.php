@@ -1,7 +1,7 @@
 <?php
 
-use Pdflax\Creator\PdfCreator;
-use Pdflax\Creator\PdfCreatorRegistry;
+use Relaxsd\Pdflax\Creator\PdfCreator;
+use Relaxsd\Pdflax\Creator\PdfCreatorRegistry;
 use PHPUnit\Framework\TestCase;
 
 
@@ -12,14 +12,14 @@ class PdfCreatorRegistryTest extends TestCase
     /**
      *
      *
-     * @var \Pdflax\Registry\RegistryWithDefault|PHPUnit_Framework_MockObject_MockObject
+     * @var \Relaxsd\Pdflax\Registry\RegistryWithDefault|PHPUnit_Framework_MockObject_MockObject
      */
     protected $registryMock;
 
     /**
      * The test subject
      *
-     * @var \Pdflax\Creator\PdfCreatorRegistry
+     * @var \Relaxsd\Pdflax\Creator\PdfCreatorRegistry
      */
     protected $pdfCreatorRegistry;
 
@@ -27,7 +27,7 @@ class PdfCreatorRegistryTest extends TestCase
     {
         parent::setUp();
 
-        $this->registryMock = $this->getMockBuilder('\Pdflax\Registry\RegistryWithDefault')->getMock();
+        $this->registryMock = $this->getMockBuilder('\Relaxsd\Pdflax\Registry\RegistryWithDefault')->getMock();
 
         $this->pdfCreatorRegistry = new PdfCreatorRegistry($this->registryMock);
     }
@@ -75,7 +75,7 @@ class PdfCreatorRegistryTest extends TestCase
             ->willReturn('PDF_CREATOR_CLASS');
 
         // Mock a PdfCreator (normally abstract) to return a 'PDF_DOCUMENT'
-        $pdfCreator = $this->getMock('Pdflax\Creator\PdfCreator', ['create']);
+        $pdfCreator = $this->getMock('Relaxsd\Pdflax\Creator\PdfCreator', ['create']);
         $pdfCreator->expects($this->once())
             ->method('create')
             ->with(['key1' => 'value1'])
@@ -83,7 +83,7 @@ class PdfCreatorRegistryTest extends TestCase
 
         // Mock our pdfCreatorRegistry to intercept its createInstance() call,
         // we will return our PdfCreator mock instead
-        $pdfCreatorRegistry = $this->getMock('Pdflax\Creator\PdfCreatorRegistry', ['createInstance'], [$this->registryMock]);
+        $pdfCreatorRegistry = $this->getMock('Relaxsd\Pdflax\Creator\PdfCreatorRegistry', ['createInstance'], [$this->registryMock]);
         $pdfCreatorRegistry->expects($this->once())
             ->method('createInstance')
             ->with('PDF_CREATOR_CLASS')
@@ -109,7 +109,7 @@ class PdfCreatorRegistryTest extends TestCase
 
     /**
      * @test
-     * @expectedException  Pdflax\Creator\PdfCreatorException
+     * @expectedException \Relaxsd\Pdflax\Creator\PdfCreatorException
      */
     public function it_excepts_when_driver_not_found()
     {
@@ -118,7 +118,7 @@ class PdfCreatorRegistryTest extends TestCase
             ->expects($this->once())
             ->method('getValue')
             ->with('NONEXISTENT')
-            ->willThrowException(new \Pdflax\Registry\RegistryException());
+            ->willThrowException(new \Relaxsd\Pdflax\Registry\RegistryException());
 
         $this->pdfCreatorRegistry->setImplementation('NONEXISTENT')->create();
     }

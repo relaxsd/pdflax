@@ -1,9 +1,9 @@
 <?php
 
-use Pdflax\Contracts\CurrencyFormatterInterface;
-use Pdflax\Contracts\PdfCreatorOptionsInterface;
-use Pdflax\PdfView;
-use Pdflax\Style\Styles;
+use Relaxsd\Pdflax\Contracts\CurrencyFormatterInterface;
+use Relaxsd\Pdflax\Contracts\PdfCreatorOptionsInterface;
+use Relaxsd\Pdflax\PdfView;
+use Relaxsd\Pdflax\Style\Styles;
 use PHPUnit\Framework\TestCase;
 
 class PdfViewTest extends TestCase
@@ -12,12 +12,12 @@ class PdfViewTest extends TestCase
     /**
      * The test subject
      *
-     * @var \Pdflax\PdfView
+     * @var \Relaxsd\Pdflax\PdfView
      */
     protected $pdfView;
 
     /**
-     * @var \Pdflax\Contracts\PdfDocumentInterface|PHPUnit_Framework_MockObject_MockObject
+     * @var \Relaxsd\Pdflax\Contracts\PdfDocumentInterface|PHPUnit_Framework_MockObject_MockObject
      */
     protected $pdfMock;
 
@@ -26,7 +26,7 @@ class PdfViewTest extends TestCase
         parent::setUp();
 
         // Create a (mock) PDF document
-        $this->pdfMock = $this->getMockBuilder('Pdflax\Contracts\PdfDocumentInterface')->getMock();
+        $this->pdfMock = $this->getMockBuilder('Relaxsd\Pdflax\Contracts\PdfDocumentInterface')->getMock();
 
         // Create a view in that document, at 10,20.
         $this->pdfView = new PdfView($this->pdfMock, 10, 20, 25, 50);
@@ -70,12 +70,12 @@ class PdfViewTest extends TestCase
     public function it_adjusts_styles_when_chaning_reference_size()
     {
         $this->pdfView->addStylesheet(
-            (new \Pdflax\Style\Stylesheet())
+            (new \Relaxsd\Pdflax\Style\Stylesheet())
                 ->addStyle('style', 'font-size', 10)
         );
         $this->pdfView->setReferenceSize(200, 200, true);
 
-        $expected = (new \Pdflax\Style\Stylesheet())
+        $expected = (new \Relaxsd\Pdflax\Style\Stylesheet())
             ->addStyle('style', 'font-size', 20);
         $this->assertEquals($expected, $this->pdfView->getStylesheet());
     }

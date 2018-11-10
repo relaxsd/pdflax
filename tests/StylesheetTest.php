@@ -1,7 +1,7 @@
 <?php
 
-use Pdflax\Style\Styles;
-use Pdflax\Style\Stylesheet;
+use Relaxsd\Pdflax\Style\Styles;
+use Relaxsd\Pdflax\Style\Stylesheet;
 use PHPUnit\Framework\TestCase;
 
 class StylesheetTest extends TestCase
@@ -10,7 +10,7 @@ class StylesheetTest extends TestCase
     /**
      * The test subject
      *
-     * @var \Pdflax\Style\Stylesheet
+     * @var \Relaxsd\Pdflax\Style\Stylesheet
      */
     protected $stylesheet;
 
@@ -67,7 +67,7 @@ class StylesheetTest extends TestCase
         $this->assertEquals(['p'], $this->stylesheet->getElements());
 
         $storedStyles = $this->stylesheet->getStyles('p');
-        $this->assertInstanceOf('Pdflax\Style\Styles', $storedStyles);
+        $this->assertInstanceOf('Relaxsd\Pdflax\Style\Styles', $storedStyles);
         $this->assertSame($this->stylesheet, $storedStyles->getStylesheet());
     }
 

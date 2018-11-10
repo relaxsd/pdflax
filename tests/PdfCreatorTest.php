@@ -1,6 +1,6 @@
 <?php
 
-use Pdflax\Contracts\PdfCreatorOptionsInterface as Options;
+use Relaxsd\Pdflax\Contracts\PdfCreatorOptionsInterface as Options;
 use PHPUnit\Framework\TestCase;
 
 class PdfCreatorTest extends TestCase
@@ -9,7 +9,7 @@ class PdfCreatorTest extends TestCase
     /**
      * The test subject (a stub)
      *
-     * @var \Pdflax\Creator\PdfCreator|PHPUnit_Framework_MockObject_MockObject
+     * @var \Relaxsd\Pdflax\Creator\PdfCreator|PHPUnit_Framework_MockObject_MockObject
      */
     protected $stub;
 
@@ -17,7 +17,7 @@ class PdfCreatorTest extends TestCase
     {
         parent::setUp();
 
-        $this->stub = $this->getMockForAbstractClass('Pdflax\Creator\PdfCreator');
+        $this->stub = $this->getMockForAbstractClass('Relaxsd\Pdflax\Creator\PdfCreator');
     }
 
     /**
