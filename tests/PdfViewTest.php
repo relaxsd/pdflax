@@ -3,6 +3,7 @@
 use Pdflax\Contracts\CurrencyFormatterInterface;
 use Pdflax\Contracts\PdfCreatorOptionsInterface;
 use Pdflax\PdfView;
+use Pdflax\Style\Styles;
 use PHPUnit\Framework\TestCase;
 
 class PdfViewTest extends TestCase
@@ -26,15 +27,6 @@ class PdfViewTest extends TestCase
 
         // Create a (mock) PDF document
         $this->pdfMock = $this->getMockBuilder('Pdflax\Contracts\PdfDocumentInterface')->getMock();
-
-        // (constructing a view will call getStylesheet)
-        $this->pdfMock->expects($this->atLeastOnce())->method('getStylesheet')->willReturn([
-            'body' => [
-                // These will be translated to local values withing the view
-                'font-size'   => 10,
-                'border-size' => 2
-            ]
-        ]);
 
         // Create a view in that document, at 10,20.
         $this->pdfView = new PdfView($this->pdfMock, 10, 20, 25, 50);
@@ -66,13 +58,26 @@ class PdfViewTest extends TestCase
         $this->pdfMock->expects($this->atLeastOnce())->method('getWidth')->willReturn(100);
         $this->pdfMock->expects($this->atLeastOnce())->method('getHeight')->willReturn(200);
 
-        // (constructing a view will call getStylesheet)
-        // We need at(2), not at(1) because all method call count, not just getStylesheet() (phpunit issue #674)
-        //$this->pdfMock->expects($this->at(2))->method('getStylesheet')->willReturn([]);
-
-        // Create a view in that document, at 10,20, 50% or parent width/height.
+        // Create a view in that document, at 10,20, 50% of parent width/height (50x100).
         $this->pdfView = new PdfView($this->pdfMock, 10, 20, '50%', '50%');
+        $this->assertEquals(50, $this->pdfView->getWidth());
+        $this->assertEquals(100, $this->pdfView->getHeight());
+    }
 
+    /**
+     * @test
+     */
+    public function it_adjusts_styles_when_chaning_reference_size()
+    {
+        $this->pdfView->addStylesheet(
+            (new \Pdflax\Style\Stylesheet())
+                ->addStyle('style', 'font-size', 10)
+        );
+        $this->pdfView->setReferenceSize(200, 200, true);
+
+        $expected = (new \Pdflax\Style\Stylesheet())
+            ->addStyle('style', 'font-size', 20);
+        $this->assertEquals($expected, $this->pdfView->getStylesheet());
     }
 
     /**
@@ -82,21 +87,25 @@ class PdfViewTest extends TestCase
     {
 
         $this->pdfMock
-            ->expects($this->exactly(2))
+            ->expects($this->exactly(3))
             ->method('setCursorX')
             ->withConsecutive(
                 [10],
-                [35]
+                [35],
+                [22.5]
             );
 
         // Far left (10 in pdf)
-        $this->pdfView->setCursorX(0);
+        $self = $this->pdfView->setCursorX(0);
 
         // Far right (35 in pdf)
-        $self = $this->pdfView->setCursorX(100);
+        $this->pdfView->setCursorX(100);
+
+        $this->pdfView->setCursorX('50%');
 
         // Assert fluent interface
         $this->assertSame($this->pdfView, $self);
+
     }
 
     /**
@@ -106,18 +115,22 @@ class PdfViewTest extends TestCase
     {
 
         $this->pdfMock
-            ->expects($this->exactly(2))
+            ->expects($this->exactly(3))
             ->method('setCursorY')
             ->withConsecutive(
                 [20],
-                [70]
+                [70],
+                [45]
             );
 
         // Far left (20 in pdf)
-        $this->pdfView->setCursorY(0);
+        $self = $this->pdfView->setCursorY(0);
 
         // Far right (70 in pdf)
-        $self = $this->pdfView->setCursorY(100);
+        $this->pdfView->setCursorY(100);
+
+        // 50%
+        $this->pdfView->setCursorY('50%');
 
         // Assert fluent interface
         $this->assertSame($this->pdfView, $self);
@@ -130,21 +143,96 @@ class PdfViewTest extends TestCase
     {
 
         $this->pdfMock
-            ->expects($this->exactly(2))
+            ->expects($this->exactly(3))
             ->method('setCursorXY')
             ->withConsecutive(
                 [10, 20],
-                [35, 70]
+                [35, 70],
+                [22.5, 45]
             );
 
         // Top left (10, 20 in pdf)
-        $this->pdfView->setCursorXY(0, 0);
+        $self = $this->pdfView->setCursorXY(0, 0);
 
         // Bottom right (35, 70 in pdf)
-        $self = $this->pdfView->setCursorXY(100, 100);
+        $this->pdfView->setCursorXY(100, 100);
+
+        // at 50%, 50%
+        $this->pdfView->setCursorXY('50%', '50%');
 
         // Assert fluent interface
         $this->assertSame($this->pdfView, $self);
+    }
+
+    /**
+     * @test
+     */
+    public function it_moved_the_cursor_horizontally()
+    {
+
+        $this->pdfMock
+            ->expects($this->exactly(3))
+            ->method('moveCursorX')
+            ->withConsecutive(
+                [0],
+                [25],
+                [12.5]
+            );
+
+        // Far left (10 in pdf)
+        $self = $this->pdfView->moveCursorX(0);
+
+        // Far right (35 in pdf)
+        $this->pdfView->moveCursorX(100);
+
+        $this->pdfView->moveCursorX('50%');
+
+        // Assert fluent interface
+        $this->assertSame($this->pdfView, $self);
+
+    }
+
+    /**
+     * @test
+     */
+    public function it_moved_the_cursor_vertically()
+    {
+
+        $this->pdfMock
+            ->expects($this->exactly(3))
+            ->method('moveCursorY')
+            ->withConsecutive(
+                [0],
+                [50],
+                [25]
+            );
+
+        // Far left (10 in pdf)
+        $self = $this->pdfView->moveCursorY(0);
+
+        // Far right (35 in pdf)
+        $this->pdfView->moveCursorY(100);
+
+        $this->pdfView->moveCursorY('50%');
+
+        // Assert fluent interface
+        $this->assertSame($this->pdfView, $self);
+
+    }
+
+    /**
+     * @test
+     */
+    public function it_gets_the_current_page()
+    {
+
+        $this->pdfMock
+            ->expects($this->once())
+            ->method('getPage')
+            ->willReturn(10);
+
+        $this->assertEquals(10, $this->pdfView->getPage());
+
     }
 
     /**
@@ -245,25 +333,6 @@ class PdfViewTest extends TestCase
     /**
      * @test
      */
-    public function it_sets_the_font_and_scales_it_horizontally()
-    {
-
-        // Font size 10 = 10% of 100 reference width
-        // Should be 10% of parent width (25), so 2.5
-        $this->pdfMock
-            ->expects($this->once())
-            ->method('setFont')
-            ->with('FILE', PdfView::FONT_STYLE_BOLD, 2.5);
-
-        $self = $this->pdfView->setFont('FILE', PdfView::FONT_STYLE_BOLD, 10);
-
-        // Assert fluent interface
-        $this->assertSame($this->pdfView, $self);
-    }
-
-    /**
-     * @test
-     */
     public function it_writes_a_text_and_scales_it_vertically()
     {
 
@@ -275,57 +344,6 @@ class PdfViewTest extends TestCase
             ->with(5, 'TEXT', 'LINK');
 
         $self = $this->pdfView->write(10, 'TEXT', 'LINK');
-
-        // Assert fluent interface
-        $this->assertSame($this->pdfView, $self);
-    }
-
-    /**
-     * @test
-     */
-    public function it_set_the_draw_color()
-    {
-
-        $this->pdfMock
-            ->expects($this->once())
-            ->method('setDrawColor')
-            ->with(1, 2, 3);
-
-        $self = $this->pdfView->setDrawColor(1, 2, 3);
-
-        // Assert fluent interface
-        $this->assertSame($this->pdfView, $self);
-    }
-
-    /**
-     * @test
-     */
-    public function it_set_the_fill_color()
-    {
-
-        $this->pdfMock
-            ->expects($this->once())
-            ->method('setFillColor')
-            ->with(1, 2, 3);
-
-        $self = $this->pdfView->setFillColor(1, 2, 3);
-
-        // Assert fluent interface
-        $this->assertSame($this->pdfView, $self);
-    }
-
-    /**
-     * @test
-     */
-    public function it_set_the_text_color()
-    {
-
-        $this->pdfMock
-            ->expects($this->once())
-            ->method('setTextColor')
-            ->with(1, 2, 3);
-
-        $self = $this->pdfView->setTextColor(1, 2, 3);
 
         // Assert fluent interface
         $this->assertSame($this->pdfView, $self);
@@ -438,21 +456,20 @@ class PdfViewTest extends TestCase
         $this->assertSame('RAW_INSTANCE', $this->pdfView->raw());
     }
 
-    // ------------------ Stylesheets
-
     /**
      * @test
      */
-    public function it_uses_and_translates_parent_stylesheet()
+    public function it_draws_a_cell()
     {
-        $this->assertEquals([
-            'body' => [
-                // These should have been translated to local values
-                'font-size'   => 20,
-                'border-size' => 4
-            ]
-        ], $this->pdfView->getStylesheet());
+        $this->pdfMock
+            ->expects($this->once())
+            ->method('cell')
+            ->with(25*10/100, 50*20/100, 'text', (new Styles($this->pdfView))->add('font-size', 32));
 
+        $self = $this->pdfView->cell(10, 20, 'text', (new Styles($this->pdfView))->add('font-size', 8));
+
+        // Assert fluent interface
+        $this->assertSame($this->pdfView, $self);
     }
 
     // ------------------ Margins (PdfMarginInterface, PdfMarginTrait)

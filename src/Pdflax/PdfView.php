@@ -3,6 +3,7 @@
 namespace Pdflax;
 
 use Pdflax\Contracts\PdfDocumentInterface;
+use Pdflax\Style\Styles;
 
 class PdfView implements PdfDocumentInterface
 {
@@ -10,10 +11,6 @@ class PdfView implements PdfDocumentInterface
     use PdfDOMTrait;
     use PdfStyleTrait;
     use PdfMarginTrait;
-
-    // These will be merged with parent document styles (scaled, see FpdfView constructor)
-    // Subclasses can define their own styles to be merged.
-    protected $stylesheet = [];
 
     /**
      * @var \Pdflax\Contracts\PdfDocumentInterface
@@ -65,8 +62,8 @@ class PdfView implements PdfDocumentInterface
         $this->h = $h;
 
         // Initialise reference size (always floats)
-        $this->localWidth  = $this->eval_parent_h($w);
-        $this->localHeight = $this->eval_parent_v($h);
+        $this->localWidth  = $this->parseGlobalValue_h($w); // Handles percentages, like '50%"
+        $this->localHeight = $this->parseGlobalValue_v($h); // Handles percentages, like '50%"
 
         // Initialize styles, including the ones pass to this method
         $this->initializeStyles();
@@ -75,19 +72,7 @@ class PdfView implements PdfDocumentInterface
 
     protected function initializeStyles()
     {
-        // Get styles from parent...
-        $mergedStylesheet = $this->pdf->getStylesheet();
-
-        // Transpose them to local measurements...
-        array_walk($mergedStylesheet, function (&$elementStyles) {
-            $elementStyles = $this->toLocalStyle($elementStyles);
-        });
-
-        // Merge $this->stylesheet (may be set by subclass)
-        $mergedStylesheet = $this->mergeStylesheets($mergedStylesheet, $this->stylesheet);
-
-        // Store them
-        $this->stylesheet = $mergedStylesheet;
+        // Subclass can implement this
     }
 
     /**
@@ -95,15 +80,13 @@ class PdfView implements PdfDocumentInterface
      * @param float $h
      * @param bool  $adjustStyles
      *
-     * @return self
+     * @return $this
      */
     public function setReferenceSize($w, $h, $adjustStyles = true)
     {
-        if ($adjustStyles) {
+        if ($adjustStyles && $this->stylesheet) {
 
-            array_walk($this->stylesheet, function (&$elementStyles) use ($w, $h){
-                $elementStyles = $this->scaleStyle($elementStyles, $w / $this->localWidth, $h / $this->localHeight);
-            });
+            $this->stylesheet->scale($w / $this->localWidth, $h / $this->localHeight);
 
         }
 
@@ -118,11 +101,11 @@ class PdfView implements PdfDocumentInterface
      *
      * @param float|string $x Local X-coordinate
      *
-     * @return self
+     * @return $this
      */
     public function setCursorX($x)
     {
-        $this->pdf->setCursorX($this->moveToGlobal_horz($x));
+        $this->pdf->setCursorX($this->moveToGlobal_h($x));
 
         return $this;
     }
@@ -132,11 +115,25 @@ class PdfView implements PdfDocumentInterface
      *
      * @param float|string $y Local Y-coordinate
      *
-     * @return self
+     * @return $this
      */
     public function setCursorY($y)
     {
-        $this->pdf->setCursorY($this->moveToGlobal_vert($y));
+        $this->pdf->setCursorY($this->moveToGlobal_v($y));
+
+        return $this;
+    }
+
+    /**
+     * Move the 'cursor' in the X direction
+     *
+     * @param float|string $d Distance
+     *
+     * @return $this
+     */
+    public function moveCursorX($d)
+    {
+        $this->pdf->moveCursorX($this->scaleToGlobal_h($d));
 
         return $this;
     }
@@ -146,11 +143,11 @@ class PdfView implements PdfDocumentInterface
      *
      * @param float|string $d Distance
      *
-     * @return self
+     * @return $this
      */
     public function moveCursorY($d)
     {
-        $this->pdf->setCursorY($this->getCursorY() + $this->moveToGlobal_vert($d));
+        $this->pdf->moveCursorY($this->scaleToGlobal_v($d));
 
         return $this;
     }
@@ -161,57 +158,59 @@ class PdfView implements PdfDocumentInterface
      * @param float|string $x Local X-coordinate
      * @param float|string $y Local Y-coordinate
      *
-     * @return self
+     * @return $this
      */
     public function setCursorXY($x, $y)
     {
-        $this->pdf->setCursorXY($this->moveToGlobal_horz($x), $this->moveToGlobal_vert($y));
+        $this->pdf->setCursorXY($this->moveToGlobal_h($x), $this->moveToGlobal_v($y));
 
         return $this;
     }
 
     /**
-     * @param float|string $x
-     * @param float|string $y
-     * @param float|string $w
-     * @param float|string $h
-     * @param string       $style
+     * @param float|string               $x
+     * @param float|string               $y
+     * @param float|string               $w
+     * @param float|string               $h
+     * @param \Pdflax\Style\Styles| null $styles
      *
-     * @return self
+     * @return $this
      */
-    public function rectangle($x, $y, $w, $h, $style = '')
+    public function rectangle($x, $y, $w, $h, $styles = null)
     {
-        $this->pdf->rectangle($this->moveToGlobal_horz($x), $this->moveToGlobal_vert($y), $this->scaleToGlobal_horz($w), $this->scaleToGlobal_vert($h), $style);
+        $styles = Styles::merged($this->getStyles('rect'), $styles);
+
+        $this->pdf->rectangle(
+            $this->moveToGlobal_h($x),
+            $this->moveToGlobal_v($y),
+            $this->scaleToGlobal_h($w),
+            $this->scaleToGlobal_v($h),
+            $this->scaledStyles($styles)
+        );
 
         return $this;
     }
 
     /**
-     * @param string $family
-     * @param int    $style
-     * @param int    $size
+     * @param float|string               $x1
+     * @param float|string               $y1
+     * @param float|string               $x2
+     * @param float|string               $y2
+     * @param \Pdflax\Style\Styles| null $styles
      *
-     * @return self
+     * @return $this
      */
-    public function setFont($family, $style = self::FONT_STYLE_NORMAL, $size = 0)
+    public function line($x1, $y1, $x2, $y2, $styles = null)
     {
-        $this->pdf->setFont($family, $style, $this->scaleToGlobal_horz($size));
+        $styles = Styles::merged($this->getStyles('line'), $styles);
 
-        return $this;
-    }
-
-    /**
-     * @param float|string $x1
-     * @param float|string $y1
-     * @param float|string $x2
-     * @param float|string $y2
-     * @param array|string $style
-     *
-     * @return self
-     */
-    public function line($x1, $y1, $x2, $y2, $style = '')
-    {
-        $this->pdf->line($this->moveToGlobal_horz($x1), $this->moveToGlobal_vert($y1), $this->moveToGlobal_horz($x2), $this->moveToGlobal_vert($y2), $style);
+        $this->pdf->line(
+            $this->moveToGlobal_h($x1),
+            $this->moveToGlobal_v($y1),
+            $this->moveToGlobal_h($x2),
+            $this->moveToGlobal_v($y2),
+            $this->scaledStyles($styles)
+        );
 
         return $this;
     }
@@ -221,29 +220,44 @@ class PdfView implements PdfDocumentInterface
      * @param string       $text
      * @param string       $link
      *
-     * @return self
+     * @return $this
      */
     public function write($h, $text, $link = '')
     {
-        $this->pdf->write($this->scaleToGlobal_vert($h), $text, $link);
+        $this->pdf->write(
+            $this->scaleToGlobal_v($h),
+            $text,
+            $link
+        );
 
         return $this;
     }
 
     /**
-     * @param string       $file
-     * @param float|string $x
-     * @param float|string $y
-     * @param float|string $w
-     * @param float|string $h
-     * @param string       $type
-     * @param string       $link
+     * @param string                     $file
+     * @param float|string               $x
+     * @param float|string               $y
+     * @param float|string               $w
+     * @param float|string               $h
+     * @param string                     $type
+     * @param string                     $link
+     * @param \Pdflax\Style\Styles| null $styles
      *
-     * @return self
+     *
+     * @return $this
      */
-    public function image($file, $x, $y, $w, $h, $type = '', $link = '')
+    public function image($file, $x, $y, $w, $h, $type = '', $link = '', $styles = null)
     {
-        $this->pdf->image($file, $this->moveToGlobal_horz($x), $this->moveToGlobal_vert($y), $this->scaleToGlobal_horz($w), $this->scaleToGlobal_vert($h), $type, $link);
+        $this->pdf->image(
+            $file,
+            $this->moveToGlobal_h($x),
+            $this->moveToGlobal_v($y),
+            $this->scaleToGlobal_h($w),
+            $this->scaleToGlobal_v($h),
+            $type,
+            $link,
+            $this->scaledStyles($styles)
+        );
 
         return $this;
     }
@@ -253,17 +267,17 @@ class PdfView implements PdfDocumentInterface
      *
      * @return float|null
      */
-    protected function moveToGlobal_horz($localX)
+    protected function moveToGlobal_h($localX)
     {
 
         if (is_null($localX)) return null;
 
         // Need to evaluate this now to do the add
-        $localX = $this->eval_view_horz($localX);
+        $localX = $this->parseLocalValue_h($localX);
 
         if ($localX < 0) $localX += $this->localWidth;
 
-        return $this->getX() + $this->scaleToGlobal_horz($localX);
+        return $this->getX() + $this->scaleToGlobal_h($localX);
     }
 
     /**
@@ -271,16 +285,16 @@ class PdfView implements PdfDocumentInterface
      *
      * @return float|null
      */
-    protected function moveToGlobal_vert($localY)
+    protected function moveToGlobal_v($localY)
     {
         if (is_null($localY)) return null;
 
         // Need to evaluate this now to do the add
-        $localY = $this->eval_view_vert($localY);
+        $localY = $this->parseLocalValue_v($localY);
 
         if ($localY < 0) $localY += $this->localHeight;
 
-        return $this->getY() + $this->scaleToGlobal_vert($localY);
+        return $this->getY() + $this->scaleToGlobal_v($localY);
     }
 
     /**
@@ -288,9 +302,9 @@ class PdfView implements PdfDocumentInterface
      *
      * @return mixed
      */
-    protected function moveToLocal_horz($globalX)
+    protected function moveToLocal_h($globalX)
     {
-        return self::scale($globalX - $this->getX(), $this->scale_horz());
+        return $this::scale($globalX - $this->getX(), $this->scale_h());
     }
 
     /**
@@ -298,9 +312,9 @@ class PdfView implements PdfDocumentInterface
      *
      * @return mixed
      */
-    protected function moveToLocal_vert($globalY)
+    protected function moveToLocal_v($globalY)
     {
-        return self::scale($globalY - $this->getY(), $this->scale_vert());
+        return $this::scale($globalY - $this->getY(), $this->scale_v());
     }
 
     /**
@@ -308,9 +322,9 @@ class PdfView implements PdfDocumentInterface
      *
      * @return float|null
      */
-    protected function scaleToGlobal_horz($localW)
+    protected function scaleToGlobal_h($localW)
     {
-        return self::scale($this->eval_view_horz($localW), 1 / $this->scale_horz());
+        return $this::scale($this->parseLocalValue_h($localW), 1 / $this->scale_h());
     }
 
     /**
@@ -318,31 +332,19 @@ class PdfView implements PdfDocumentInterface
      *
      * @return float|null
      */
-    protected function scaleToGlobal_vert($localH)
+    protected function scaleToGlobal_v($localH)
     {
-        return self::scale($this->eval_view_vert($localH), 1 / $this->scale_vert());
+        return $this::scale($this->parseLocalValue_v($localH), 1 / $this->scale_v());
     }
 
     /**
-     * @param float|string|null $globalW
+     * @param \Pdflax\Style\Styles|null $styles
      *
-     * @return float|null
+     * @return \Pdflax\Style\Styles|null
      */
-    protected function scaleToLocal_horz($globalW)
+    protected function scaledStyles($styles)
     {
-        // TODO: No support for 'n%' like scaleToGlobal_horz?
-        return self::scale($globalW, $this->scale_horz());
-    }
-
-    /**
-     * @param float|string|null $globalH
-     *
-     * @return float|null
-     */
-    protected function scaleToLocal_vert($globalH)
-    {
-        // TODO: No support for 'n%' like scaleToGlobal_vert?
-        return self::scale($globalH, $this->scale_vert());
+        return Styles::scaled($styles, $this->scale_h(), $this->scale_v());
     }
 
     /**
@@ -361,7 +363,7 @@ class PdfView implements PdfDocumentInterface
     /**
      * @return float
      */
-    protected function scale_horz()
+    protected function scale_h()
     {
         $viewWidth = $this->getWidth();
 
@@ -371,46 +373,11 @@ class PdfView implements PdfDocumentInterface
     /**
      * @return float
      */
-    protected function scale_vert()
+    protected function scale_v()
     {
         $viewHeight = $this->getHeight();
 
         return $viewHeight ? ($this->localHeight / $viewHeight) : 1;
-    }
-
-    /**
-     * @param array $style
-     *
-     * @return array
-     */
-    protected function toGlobalStyle(array $style)
-    {
-        return self::scaleStyle($style, 1/$this->scale_horz(), 1/$this->scale_vert());
-    }
-
-    protected function toLocalStyle(array $style)
-    {
-        return self::scaleStyle($style, $this->scale_horz(), $this->scale_vert());
-    }
-
-    /**
-     * @param array $style
-     * @param float $factorHorz
-     * @param float $factorVert
-     *
-     * @return array
-     */
-    protected function scaleStyle(array $style, $factorHorz, $factorVert)
-    {
-        if (array_key_exists('font-size', $style)) {
-            $style['font-size'] = self::scale($style['font-size'], $factorVert);
-        }
-
-        if (array_key_exists('border-size', $style)) {
-            $style['border-size'] = self::scale($style['border-size'], $factorVert);
-        }
-
-        return $style;
     }
 
     /**
@@ -431,7 +398,7 @@ class PdfView implements PdfDocumentInterface
     public function getX()
     {
         // Support for 'n%', relative to parent
-        return $this->eval_parent_h($this->x);
+        return $this->parseGlobalValue_h($this->x);
     }
 
     /**
@@ -442,7 +409,7 @@ class PdfView implements PdfDocumentInterface
     public function getY()
     {
         // Support for 'n%', relative to parent
-        return $this->eval_parent_v($this->y);
+        return $this->parseGlobalValue_v($this->y);
     }
 
     /**
@@ -453,7 +420,7 @@ class PdfView implements PdfDocumentInterface
     public function getWidth()
     {
         // Support for 'n%', relative to parent
-        return $this->eval_parent_h($this->w);
+        return $this->parseGlobalValue_h($this->w);
     }
 
     /**
@@ -464,7 +431,7 @@ class PdfView implements PdfDocumentInterface
     public function getHeight()
     {
         // Support for 'n%', relative to parent
-        return $this->eval_parent_v($this->h);
+        return $this->parseGlobalValue_v($this->h);
     }
 
     // -----------
@@ -474,7 +441,7 @@ class PdfView implements PdfDocumentInterface
      *
      * @return float|null
      */
-    protected function eval_parent_h($globalValue)
+    protected function parseGlobalValue_h($globalValue)
     {
         return (is_string($globalValue))
             ? $this->getParentWidth() * floatval($globalValue) / 100
@@ -486,7 +453,7 @@ class PdfView implements PdfDocumentInterface
      *
      * @return float|null
      */
-    protected function eval_parent_v($globalValue)
+    protected function parseGlobalValue_v($globalValue)
     {
         return (is_string($globalValue))
             ? $this->getParentHeight() * floatval($globalValue) / 100
@@ -498,7 +465,7 @@ class PdfView implements PdfDocumentInterface
      *
      * @return float|null
      */
-    protected function eval_view_horz($localValue)
+    protected function parseLocalValue_h($localValue)
     {
         return (is_string($localValue))
             ? $this->localWidth * floatval($localValue) / 100
@@ -510,7 +477,7 @@ class PdfView implements PdfDocumentInterface
      *
      * @return float|null
      */
-    protected function eval_view_vert($localValue)
+    protected function parseLocalValue_v($localValue)
     {
         return (is_string($localValue))
             ? $this->localHeight * floatval($localValue) / 100
@@ -542,7 +509,7 @@ class PdfView implements PdfDocumentInterface
      */
     public function getCursorX()
     {
-        return $this->moveToLocal_horz($this->pdf->GetCursorX());
+        return $this->moveToLocal_h($this->pdf->GetCursorX());
     }
 
     /**
@@ -552,7 +519,7 @@ class PdfView implements PdfDocumentInterface
      */
     public function getCursorY()
     {
-        return $this->moveToLocal_vert($this->pdf->GetCursorY());
+        return $this->moveToLocal_v($this->pdf->GetCursorY());
     }
 
     /**
@@ -564,22 +531,26 @@ class PdfView implements PdfDocumentInterface
     }
 
     /**
-     * @param float|string $w
-     * @param float|string $h
-     * @param string       $txt
-     * @param array|string $options
+     * @param float|string              $w
+     * @param float|string              $h
+     * @param string                    $txt
+     * @param \Pdflax\Style\Styles|null $styles
+     *
+     * @return $this
      */
-    public function cell($w, $h = 0.0, $txt = '', $options = [])
+    public function cell($w, $h = 0.0, $txt = '', $styles = null)
     {
-        // Merge the options with the defaults to be sure all fields exist.
-        $options = $this->getStyle('cell', $options);
+        $styles = Styles::merged($this->getStyles('cell'), $styles);
 
         $originalY    = $this->pdf->getCursorY();
         $originalPage = $this->pdf->getPage();
 
-        $globalW = $this->scaleToGlobal_horz($w);
-        $globalH = $this->scaleToGlobal_vert($h);
-        $this->pdf->cell($globalW, $globalH, $txt, $options);
+        $this->pdf->cell(
+            $this->scaleToGlobal_h($w),
+            $this->scaleToGlobal_v($h),
+            $txt,
+            $this->scaledStyles($styles)
+        );
 
         // After an automatic page-break, the y will move from the coordinate
         // on the old page (e.g. 276) to the coordinate on the new page (e.g. 10)
@@ -596,53 +567,12 @@ class PdfView implements PdfDocumentInterface
             $newY = $this->pdf->getCursorY();
 
             if ($options['ln'] > 0) {
-                $newY -= $globalH;
+                $newY -= $this->scaleToGlobal_v($h);
             }
 
             $this->y += $newY - $originalY;   // Mostly 0, but sometimes a correction of about -266
 
         }
-
-    }
-
-    /**
-     * @param string|int|array $r Red value (with $g and $b) or greyscale value ($g and $b null) or color name or [r,g,b] array
-     * @param int|null         $g Green value
-     * @param int|null         $b Blue value
-     *
-     * @return self
-     */
-    public function setDrawColor($r, $g = null, $b = null)
-    {
-        $this->pdf->setDrawColor($r, $g, $b);
-
-        return $this;
-    }
-
-    /**
-     * @param string|int|array $r Red value (with $g and $b) or greyscale value ($g and $b null) or color name or [r,g,b] array
-     * @param int|null         $g Green value
-     * @param int|null         $b Blue value
-     *
-     * @return self
-     */
-    public function setTextColor($r, $g = null, $b = null)
-    {
-        $this->pdf->setTextColor($r, $g, $b);
-
-        return $this;
-    }
-
-    /**
-     * @param string|int|array $r Red value (with $g and $b) or greyscale value ($g and $b null) or color name or [r,g,b] array
-     * @param int|null         $g Green value
-     * @param int|null         $b Blue value
-     *
-     * @return self
-     */
-    public function setFillColor($r, $g = null, $b = null)
-    {
-        $this->pdf->setFillColor($r, $g, $b);
 
         return $this;
     }
@@ -651,7 +581,7 @@ class PdfView implements PdfDocumentInterface
      * @param     $auto
      * @param int $margin
      *
-     * @return self
+     * @return $this
      */
     public function setAutoPageBreak($auto, $margin = 0)
     {
@@ -664,7 +594,7 @@ class PdfView implements PdfDocumentInterface
      * @param string|null $orientation
      * @param string|null $size
      *
-     * @return self
+     * @return $this
      * @throws \Pdflax\Exceptions\UnsupportedFeatureException
      */
     public function addPage($orientation = null, $size = null)
@@ -677,7 +607,7 @@ class PdfView implements PdfDocumentInterface
     /**
      * @param string $fileName
      *
-     * @return self
+     * @return $this
      */
     public function save($fileName)
     {
@@ -705,23 +635,6 @@ class PdfView implements PdfDocumentInterface
         $this->pdf->newLine($n, $options);
 
         return $this;
-    }
-
-    /**
-     * @param              $stylesheet
-     * @param array|string $extraStylesheet
-     *
-     * @return array
-     */
-    protected function mergeStylesheets($stylesheet, $extraStylesheet)
-    {
-        // Then merge our styles back in.
-        foreach ((array)$extraStylesheet as $elementName => $elementStyle) {
-            $stylesheet[$elementName] = array_key_exists($elementName, $stylesheet)
-                ? array_merge($stylesheet[$elementName], $elementStyle)
-                : $elementStyle;
-        }
-        return $stylesheet;
     }
 
     /**

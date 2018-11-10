@@ -73,7 +73,7 @@ class PdfTable extends PdfView
         $previousColumn = $columnCount ? $this->columns[$columnCount - 1] : null;
 
         // Determine the x position (float) based on the previous columns x + width (string or float)
-        $x = isset($previousColumn) ? ($previousColumn->getX() + $this->eval_parent_h($previousColumn->getWidth())) : 0;
+        $x = isset($previousColumn) ? ($previousColumn->getX() + $this->parseGlobalValue_h($previousColumn->getWidth())) : 0;
 
         $this->columns[] = new PdfTableColumn($this, $x, $width, $styles);
 

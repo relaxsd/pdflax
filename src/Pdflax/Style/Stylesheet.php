@@ -102,4 +102,15 @@ class Stylesheet
         return call_user_func_array([new Stylesheet(), "mergeStylesheets"], func_get_args());
     }
 
+    /**
+     * @param float $factorH
+     * @param float $factorV
+     */
+    public function scale($factorH, $factorV)
+    {
+        foreach ($this->elementStyles as $styles) {
+            $styles->scale($factorH, $factorV);
+        }
+    }
+
 }

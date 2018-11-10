@@ -2,7 +2,7 @@
 
 namespace Pdflax\Contracts;
 
-interface PdfDocumentInterface extends PdfStyleInterface, PdfDOMInterface, PdfMarginInterface, PdfFormattingInterface
+interface PdfDocumentInterface extends PdfDOMInterface, PdfMarginInterface, PdfFormattingInterface
 {
 
     const RECT_STYLE_BORDER = 0x001;
@@ -92,48 +92,30 @@ interface PdfDocumentInterface extends PdfStyleInterface, PdfDOMInterface, PdfMa
     public function setCursorXY($x, $y);
 
     /**
-     * @param float|string $w
-     * @param float|string $h
-     * @param string       $txt
-     * @param array|string $options
-     */
-    public function cell($w, $h = 0.0, $txt = '', $options = []);
-
-    /**
-     * @param string $family
-     * @param int    $style
-     * @param int    $size
+     * Move the 'cursor' horizontally
+     *
+     * @param float|string $d distance
      *
      * @return self
      */
-    public function setFont($family, $style = self::FONT_STYLE_NORMAL, $size = 0);
+    public function moveCursorX($d);
 
     /**
-     * @param string|int|array $r Red value (with $g and $b) or greyscale value ($g and $b null) or color name or [r,g,b] array
-     * @param int|null         $g Green value
-     * @param int|null         $b Blue value
+     * Move the 'cursor' vertically
+     *
+     * @param float|string $d distance
      *
      * @return self
      */
-    public function setDrawColor($r, $g = null, $b = null);
+    public function moveCursorY($d);
 
     /**
-     * @param string|int|array $r Red value (with $g and $b) or greyscale value ($g and $b null) or color name or [r,g,b] array
-     * @param int|null         $g Green value
-     * @param int|null         $b Blue value
-     *
-     * @return self
+     * @param float|string              $w
+     * @param float|string              $h
+     * @param string                    $txt
+     * @param \Pdflax\Style\Styles|null $styles
      */
-    public function setTextColor($r, $g = null, $b = null);
-
-    /**
-     * @param string|int|array $r Red value (with $g and $b) or greyscale value ($g and $b null) or color name or [r,g,b] array
-     * @param int|null         $g Green value
-     * @param int|null         $b Blue value
-     *
-     * @return self
-     */
-    public function setFillColor($r, $g = null, $b = null);
+    public function cell($w, $h = 0.0, $txt = '', $styles = null);
 
     /**
      * @param     $auto
@@ -173,44 +155,46 @@ interface PdfDocumentInterface extends PdfStyleInterface, PdfDOMInterface, PdfMa
     public function newLine($n = 1, $options = null);
 
     /**
-     * @param float|string $x
-     * @param float|string $y
-     * @param float|string $w
-     * @param float|string $h
-     * @param array|string $style
+     * @param float|string              $x
+     * @param float|string              $y
+     * @param float|string              $w
+     * @param float|string              $h
+     * @param \Pdflax\Style\Styles|null $styles
      *
      * @return self
      */
-    public function rectangle($x, $y, $w, $h, $style = '');
+    public function rectangle($x, $y, $w, $h, $styles = null);
 
     /**
-     * @param float|string $x1
-     * @param float|string $y1
-     * @param float|string $x2
-     * @param float|string $y2
-     * @param array|string $style
+     * @param float|string               $x1
+     * @param float|string               $y1
+     * @param float|string               $x2
+     * @param float|string               $y2
+     * @param \Pdflax\Style\Styles| null $styles
      *
      * @return self
      */
-    public function line($x1, $y1, $x2, $y2, $style = '');
+    public function line($x1, $y1, $x2, $y2, $styles = null);
 
     /**
-     * @param string       $file
-     * @param float|string $x
-     * @param float|string $y
-     * @param float|string $w
-     * @param float|string $h
-     * @param string       $type
-     * @param string       $link
+     * @param string                     $file
+     * @param float|string               $x
+     * @param float|string               $y
+     * @param float|string               $w
+     * @param float|string               $h
+     * @param string                     $type
+     * @param string                     $link
+     * @param \Pdflax\Style\Styles| null $styles
+     *
      *
      * @return self
      */
-    public function image($file, $x, $y, $w, $h, $type = '', $link = '');
+    public function image($file, $x, $y, $w, $h, $type = '', $link = '', $styles = null);
 
     /**
-     * @param float|string $h
-     * @param string       $text
-     * @param string       $link
+     * @param float|string               $h
+     * @param string                     $text
+     * @param string                     $link
      *
      * @return self
      */
@@ -222,3 +206,4 @@ interface PdfDocumentInterface extends PdfStyleInterface, PdfDOMInterface, PdfMa
     public function raw();
 
 }
+

@@ -108,7 +108,7 @@ class PdfTableRow extends PdfView
         $columnWidth = 0.0;
         for ($i = 0; $i < $colspan; $i++) {
             $col         = $this->table->getColumn($columnIndex + $i);
-            $columnWidth += $this->eval_parent_h($col->getWidth());
+            $columnWidth += $this->parseGlobalValue_h($col->getWidth());
         }
 
         // Support for 'tr-padding-left': indent first column

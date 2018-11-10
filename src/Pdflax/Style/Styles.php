@@ -168,35 +168,82 @@ class Styles
     /**
      * Copy this Styles object and parent to a stylesheet
      *
-     * @param \Pdflax\Style\Stylesheet $stylesheet
+     * @param \Pdflax\Style\Stylesheet $stylesheet The stylesheet to link to (default: use this stylesheet)
      *
      * @return \Pdflax\Style\Styles
      */
-    public function copy($stylesheet)
+    public function copy($stylesheet = null)
     {
+        // Clone this object (including stylesheet reference)
         $clone = clone $this;
-        $clone->setStylesheet($stylesheet);
+
+        // Assign a new stylesheet
+        if ($stylesheet) {
+            $clone->setStylesheet($stylesheet);
+        }
+
         return $clone;
     }
 
     /**
-     * @param float $factor
+     * @param float $factorH
+     * @param float $factorV
      *
      * @return \Pdflax\Style\Styles
      */
-    public function scale($factor = 1.0)
+    public function scale($factorH = 1.0, $factorV = 1.0)
     {
         foreach ($this->styles as $attribute => &$value) {
             if ($attribute == 'size' || self::endsWith($attribute, '-size')) {
-                $value *= $factor;
+                $value *= $factorH;
             }
         }
         return $this;
     }
 
+    /**
+     * Returns a new Styles object with the given styles merged (or null if both null)
+     *
+     * @param Styles|null $styles1
+     * @param Styles|null $styles2
+     *
+     * @return Styles|null
+     */
+    public static function merged($styles1, $styles2)
+    {
+        if ($styles1) {
+            return ($styles1->copy())->mergeStyles($styles2);
+
+        } elseif ($styles2) {
+            return $styles2->copy();
+
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns a new Styles object that has been adjusted for scale (or null)
+     *
+     * @param Styles|null $styles
+     * @param float       $factorH
+     * @param float       $factorV
+     *
+     * @return Styles|null
+     * /**
+     *
+     * @return \Pdflax\Style\Styles
+     */
+    public static function scaled($styles, $factorH = 1.0, $factorV = 1.0)
+    {
+        return $styles
+            ? ($styles->copy())->scale($factorH, $factorV)
+            : null;
+    }
+
     private static function endsWith($haystack, $needle)
     {
-        return ((string) $needle === substr($haystack, -strlen($needle)));
+        return ((string)$needle === substr($haystack, -strlen($needle)));
     }
 
 }
