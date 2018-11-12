@@ -338,9 +338,9 @@ class PdfView implements PdfDocumentInterface
     }
 
     /**
-     * @param \Relaxsd\Stylesheets\Style|null $style
+     * @param \Relaxsd\Stylesheets\Style|array|null $style
      *
-     * @return \Relaxsd\Stylesheets\Style|null
+     * @return \Relaxsd\Stylesheets\Style|array|null
      */
     protected function scaledStyle($style)
     {
@@ -534,7 +534,7 @@ class PdfView implements PdfDocumentInterface
      * @param float|string              $w
      * @param float|string              $h
      * @param string                    $txt
-     * @param \Relaxsd\Stylesheets\Style|null $style
+     * @param \Relaxsd\Stylesheets\Style|array|null $style
      *
      * @return $this
      */

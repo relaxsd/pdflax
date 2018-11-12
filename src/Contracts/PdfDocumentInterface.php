@@ -113,9 +113,9 @@ interface PdfDocumentInterface extends PdfDOMInterface, PdfMarginInterface, PdfF
      * @param float|string              $w
      * @param float|string              $h
      * @param string                    $txt
-     * @param \Relaxsd\Stylesheets\Style|null $styles
+     * @param \Relaxsd\Stylesheets\Style|array|null $style
      */
-    public function cell($w, $h = 0.0, $txt = '', $styles = null);
+    public function cell($w, $h = 0.0, $txt = '', $style = null);
 
     /**
      * @param     $auto
@@ -159,22 +159,22 @@ interface PdfDocumentInterface extends PdfDOMInterface, PdfMarginInterface, PdfF
      * @param float|string              $y
      * @param float|string              $w
      * @param float|string              $h
-     * @param \Relaxsd\Stylesheets\Style|null $styles
+     * @param \Relaxsd\Stylesheets\Style|array|null $style
      *
      * @return self
      */
-    public function rectangle($x, $y, $w, $h, $styles = null);
+    public function rectangle($x, $y, $w, $h, $style = null);
 
     /**
      * @param float|string               $x1
      * @param float|string               $y1
      * @param float|string               $x2
      * @param float|string               $y2
-     * @param \Relaxsd\Stylesheets\Style|array|null $styles
+     * @param \Relaxsd\Stylesheets\Style|array|null $style
      *
      * @return self
      */
-    public function line($x1, $y1, $x2, $y2, $styles = null);
+    public function line($x1, $y1, $x2, $y2, $style = null);
 
     /**
      * @param string                     $file
@@ -184,12 +184,12 @@ interface PdfDocumentInterface extends PdfDOMInterface, PdfMarginInterface, PdfF
      * @param float|string               $h
      * @param string                     $type
      * @param string                     $link
-     * @param \Relaxsd\Stylesheets\Style|array|null $styles
+     * @param \Relaxsd\Stylesheets\Style|array|null $style
      *
      *
      * @return self
      */
-    public function image($file, $x, $y, $w, $h, $type = '', $link = '', $styles = null);
+    public function image($file, $x, $y, $w, $h, $type = '', $link = '', $style = null);
 
     /**
      * @param float|string               $h
