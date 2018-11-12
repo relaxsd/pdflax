@@ -113,7 +113,7 @@ interface PdfDocumentInterface extends PdfDOMInterface, PdfMarginInterface, PdfF
      * @param float|string              $w
      * @param float|string              $h
      * @param string                    $txt
-     * @param \Relaxsd\Pdflax\Style\Styles|null $styles
+     * @param \Relaxsd\Stylesheets\Style|null $styles
      */
     public function cell($w, $h = 0.0, $txt = '', $styles = null);
 
@@ -159,7 +159,7 @@ interface PdfDocumentInterface extends PdfDOMInterface, PdfMarginInterface, PdfF
      * @param float|string              $y
      * @param float|string              $w
      * @param float|string              $h
-     * @param \Relaxsd\Pdflax\Style\Styles|null $styles
+     * @param \Relaxsd\Stylesheets\Style|null $styles
      *
      * @return self
      */
@@ -170,7 +170,7 @@ interface PdfDocumentInterface extends PdfDOMInterface, PdfMarginInterface, PdfF
      * @param float|string               $y1
      * @param float|string               $x2
      * @param float|string               $y2
-     * @param \Relaxsd\Pdflax\Style\Styles| null $styles
+     * @param \Relaxsd\Stylesheets\Style|array|null $styles
      *
      * @return self
      */
@@ -184,7 +184,7 @@ interface PdfDocumentInterface extends PdfDOMInterface, PdfMarginInterface, PdfF
      * @param float|string               $h
      * @param string                     $type
      * @param string                     $link
-     * @param \Relaxsd\Pdflax\Style\Styles| null $styles
+     * @param \Relaxsd\Stylesheets\Style|array|null $styles
      *
      *
      * @return self

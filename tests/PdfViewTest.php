@@ -1,10 +1,12 @@
 <?php
 
+use PHPUnit\Framework\TestCase;
 use Relaxsd\Pdflax\Contracts\CurrencyFormatterInterface;
 use Relaxsd\Pdflax\Contracts\PdfCreatorOptionsInterface;
 use Relaxsd\Pdflax\PdfView;
 use Relaxsd\Pdflax\Style\Styles;
-use PHPUnit\Framework\TestCase;
+use Relaxsd\Stylesheets\Style;
+use Relaxsd\Stylesheets\Stylesheet;
 
 class PdfViewTest extends TestCase
 {
@@ -69,14 +71,18 @@ class PdfViewTest extends TestCase
      */
     public function it_adjusts_styles_when_chaning_reference_size()
     {
-        $this->pdfView->addStylesheet(
-            (new \Relaxsd\Pdflax\Style\Stylesheet())
-                ->addStyle('style', 'font-size', 10)
-        );
+        $this->pdfView->addStylesheet(new Stylesheet([
+            'style' => [
+                'font-size' => 10
+            ]
+        ]));
         $this->pdfView->setReferenceSize(200, 200, true);
 
-        $expected = (new \Relaxsd\Pdflax\Style\Stylesheet())
-            ->addStyle('style', 'font-size', 20);
+        $expected = (new Stylesheet([
+            'style' => [
+                'font-size' => 20
+            ]
+        ]));
         $this->assertEquals($expected, $this->pdfView->getStylesheet());
     }
 
@@ -464,9 +470,9 @@ class PdfViewTest extends TestCase
         $this->pdfMock
             ->expects($this->once())
             ->method('cell')
-            ->with(25*10/100, 50*20/100, 'text', (new Styles($this->pdfView))->add('font-size', 32));
+            ->with(25 * 10 / 100, 50 * 20 / 100, 'text', new Style(['font-size'=> 32]));
 
-        $self = $this->pdfView->cell(10, 20, 'text', (new Styles($this->pdfView))->add('font-size', 8));
+        $self = $this->pdfView->cell(10, 20, 'text', [ 'font-size'=> 8]);
 
         // Assert fluent interface
         $this->assertSame($this->pdfView, $self);

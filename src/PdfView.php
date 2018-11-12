@@ -3,7 +3,7 @@
 namespace Relaxsd\Pdflax;
 
 use Relaxsd\Pdflax\Contracts\PdfDocumentInterface;
-use Relaxsd\Pdflax\Style\Styles;
+use Relaxsd\Stylesheets\Style;
 
 class PdfView implements PdfDocumentInterface
 {
@@ -172,20 +172,20 @@ class PdfView implements PdfDocumentInterface
      * @param float|string               $y
      * @param float|string               $w
      * @param float|string               $h
-     * @param \Relaxsd\Pdflax\Style\Styles| null $styles
+     * @param \Relaxsd\Stylesheets\Style|array|null $style
      *
      * @return $this
      */
-    public function rectangle($x, $y, $w, $h, $styles = null)
+    public function rectangle($x, $y, $w, $h, $style = null)
     {
-        $styles = Styles::merged($this->getStyles('rect'), $styles);
+        $style = Style::merged($this->getStyle('rect'), $style);
 
         $this->pdf->rectangle(
             $this->moveToGlobal_h($x),
             $this->moveToGlobal_v($y),
             $this->scaleToGlobal_h($w),
             $this->scaleToGlobal_v($h),
-            $this->scaledStyles($styles)
+            $this->scaledStyle($style)
         );
 
         return $this;
@@ -196,20 +196,20 @@ class PdfView implements PdfDocumentInterface
      * @param float|string               $y1
      * @param float|string               $x2
      * @param float|string               $y2
-     * @param \Relaxsd\Pdflax\Style\Styles| null $styles
+     * @param \Relaxsd\Stylesheets\Style|array|null $style
      *
      * @return $this
      */
-    public function line($x1, $y1, $x2, $y2, $styles = null)
+    public function line($x1, $y1, $x2, $y2, $style = null)
     {
-        $styles = Styles::merged($this->getStyles('line'), $styles);
+        $style = Style::merged($this->getStyle('line'), $style);
 
         $this->pdf->line(
             $this->moveToGlobal_h($x1),
             $this->moveToGlobal_v($y1),
             $this->moveToGlobal_h($x2),
             $this->moveToGlobal_v($y2),
-            $this->scaledStyles($styles)
+            $this->scaledStyle($style)
         );
 
         return $this;
@@ -241,12 +241,12 @@ class PdfView implements PdfDocumentInterface
      * @param float|string               $h
      * @param string                     $type
      * @param string                     $link
-     * @param \Relaxsd\Pdflax\Style\Styles| null $styles
+     * @param \Relaxsd\Stylesheets\Style|array|null $style
      *
      *
      * @return $this
      */
-    public function image($file, $x, $y, $w, $h, $type = '', $link = '', $styles = null)
+    public function image($file, $x, $y, $w, $h, $type = '', $link = '', $style = null)
     {
         $this->pdf->image(
             $file,
@@ -256,7 +256,7 @@ class PdfView implements PdfDocumentInterface
             $this->scaleToGlobal_v($h),
             $type,
             $link,
-            $this->scaledStyles($styles)
+            $this->scaledStyle($style)
         );
 
         return $this;
@@ -338,13 +338,13 @@ class PdfView implements PdfDocumentInterface
     }
 
     /**
-     * @param \Relaxsd\Pdflax\Style\Styles|null $styles
+     * @param \Relaxsd\Stylesheets\Style|null $style
      *
-     * @return \Relaxsd\Pdflax\Style\Styles|null
+     * @return \Relaxsd\Stylesheets\Style|null
      */
-    protected function scaledStyles($styles)
+    protected function scaledStyle($style)
     {
-        return Styles::scaled($styles, $this->scale_h(), $this->scale_v());
+        return Style::scaled($style, $this->scale_h(), $this->scale_v());
     }
 
     /**
@@ -534,13 +534,13 @@ class PdfView implements PdfDocumentInterface
      * @param float|string              $w
      * @param float|string              $h
      * @param string                    $txt
-     * @param \Relaxsd\Pdflax\Style\Styles|null $styles
+     * @param \Relaxsd\Stylesheets\Style|null $style
      *
      * @return $this
      */
-    public function cell($w, $h = 0.0, $txt = '', $styles = null)
+    public function cell($w, $h = 0.0, $txt = '', $style = null)
     {
-        $styles = Styles::merged($this->getStyles('cell'), $styles);
+        $style = Style::merged($this->getStyle('cell'), $style);
 
         $originalY    = $this->pdf->getCursorY();
         $originalPage = $this->pdf->getPage();
@@ -549,7 +549,7 @@ class PdfView implements PdfDocumentInterface
             $this->scaleToGlobal_h($w),
             $this->scaleToGlobal_v($h),
             $txt,
-            $this->scaledStyles($styles)
+            $this->scaledStyle($style)
         );
 
         // After an automatic page-break, the y will move from the coordinate

@@ -9,14 +9,14 @@ trait PdfStyleTrait
 {
 
     /**
-     * @var \Relaxsd\Pdflax\Style\Stylesheet
+     * @var \Relaxsd\Stylesheets\Stylesheet
      */
     protected $stylesheet;
 
     /**
      * Get all available styles.
      *
-     * @return \Relaxsd\Pdflax\Style\Stylesheet
+     * @return \Relaxsd\Stylesheets\Stylesheet
      */
     public function getStylesheet()
     {
@@ -24,14 +24,14 @@ trait PdfStyleTrait
     }
 
     /**
-     * @param \Relaxsd\Pdflax\Style\Stylesheet $stylesheet
+     * @param \Relaxsd\Stylesheets\Stylesheet $stylesheet
      *
      * @return $this
      */
     public function addStylesheet($stylesheet)
     {
         if (isset($this->stylesheet)) {
-            $this->stylesheet->mergeStylesheets($stylesheet);
+            $this->stylesheet->add($stylesheet);
         } else {
             $this->stylesheet = $stylesheet;
         }
@@ -42,12 +42,12 @@ trait PdfStyleTrait
     /**
      * @param string $element
      *
-     * @return null|\Pdflax\Style\Styles
+     * @return null|\Relaxsd\Stylesheets\Style
      */
-    public function getStyles($element)
+    public function getStyle($element)
     {
         return $this->stylesheet
-            ? $this->stylesheet->getStyles($element)
+            ? $this->stylesheet->getStyle($element)
             : null;
     }
 
