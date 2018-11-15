@@ -68,7 +68,7 @@ interface PdfDocumentInterface extends PdfDOMInterface, PdfMarginInterface, PdfF
      *
      * @param float|string $x Local X-coordinate
      *
-     * @return self
+     * @return $this
      */
     public function setCursorX($x);
 
@@ -77,7 +77,7 @@ interface PdfDocumentInterface extends PdfDOMInterface, PdfMarginInterface, PdfF
      *
      * @param float|string $y Local Y-coordinate
      *
-     * @return self
+     * @return $this
      */
     public function setCursorY($y);
 
@@ -87,7 +87,7 @@ interface PdfDocumentInterface extends PdfDOMInterface, PdfMarginInterface, PdfF
      * @param float|string $x Local X-coordinate
      * @param float|string $y Local Y-coordinate
      *
-     * @return self
+     * @return $this
      */
     public function setCursorXY($x, $y);
 
@@ -96,7 +96,7 @@ interface PdfDocumentInterface extends PdfDOMInterface, PdfMarginInterface, PdfF
      *
      * @param float|string $d distance
      *
-     * @return self
+     * @return $this
      */
     public function moveCursorX($d);
 
@@ -105,7 +105,7 @@ interface PdfDocumentInterface extends PdfDOMInterface, PdfMarginInterface, PdfF
      *
      * @param float|string $d distance
      *
-     * @return self
+     * @return $this
      */
     public function moveCursorY($d);
 
@@ -114,6 +114,8 @@ interface PdfDocumentInterface extends PdfDOMInterface, PdfMarginInterface, PdfF
      * @param float|string              $h
      * @param string                    $txt
      * @param \Relaxsd\Stylesheets\Style|array|null $style
+     *
+     * @return $this
      */
     public function cell($w, $h = 0.0, $txt = '', $style = null);
 
@@ -121,7 +123,7 @@ interface PdfDocumentInterface extends PdfDOMInterface, PdfMarginInterface, PdfF
      * @param     $auto
      * @param int $margin
      *
-     * @return self
+     * @return $this
      */
     public function setAutoPageBreak($auto, $margin = 0);
 
@@ -129,7 +131,7 @@ interface PdfDocumentInterface extends PdfDOMInterface, PdfMarginInterface, PdfF
      * @param string|null $orientation
      * @param string|null $size
      *
-     * @return self
+     * @return $this
      * @throws \Relaxsd\Pdflax\Exceptions\UnsupportedFeatureException
      */
     public function addPage($orientation = null, $size = null);
@@ -137,7 +139,7 @@ interface PdfDocumentInterface extends PdfDOMInterface, PdfMarginInterface, PdfF
     /**
      * @param string $fileName
      *
-     * @return self
+     * @return $this
      */
     public function save($fileName);
 
@@ -161,7 +163,7 @@ interface PdfDocumentInterface extends PdfDOMInterface, PdfMarginInterface, PdfF
      * @param float|string              $h
      * @param \Relaxsd\Stylesheets\Style|array|null $style
      *
-     * @return self
+     * @return $this
      */
     public function rectangle($x, $y, $w, $h, $style = null);
 
@@ -172,7 +174,7 @@ interface PdfDocumentInterface extends PdfDOMInterface, PdfMarginInterface, PdfF
      * @param float|string               $y2
      * @param \Relaxsd\Stylesheets\Style|array|null $style
      *
-     * @return self
+     * @return $this
      */
     public function line($x1, $y1, $x2, $y2, $style = null);
 
@@ -187,7 +189,7 @@ interface PdfDocumentInterface extends PdfDOMInterface, PdfMarginInterface, PdfF
      * @param \Relaxsd\Stylesheets\Style|array|null $style
      *
      *
-     * @return self
+     * @return $this
      */
     public function image($file, $x, $y, $w, $h, $type = '', $link = '', $style = null);
 
@@ -195,10 +197,11 @@ interface PdfDocumentInterface extends PdfDOMInterface, PdfMarginInterface, PdfF
      * @param float|string               $h
      * @param string                     $text
      * @param string                     $link
+     * @param \Relaxsd\Stylesheets\Style|array|null $style
      *
-     * @return self
+     * @return $this
      */
-    public function write($h, $text, $link = '');
+    public function write($h, $text, $link = '', $style = null);
 
     /**
      * @return mixed
