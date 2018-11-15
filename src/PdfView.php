@@ -4,6 +4,7 @@ namespace Relaxsd\Pdflax;
 
 use Relaxsd\Pdflax\Contracts\PdfDocumentInterface;
 use Relaxsd\Stylesheets\Style;
+use Relaxsd\Stylesheets\Stylesheet;
 
 class PdfView implements PdfDocumentInterface
 {
@@ -45,10 +46,10 @@ class PdfView implements PdfDocumentInterface
      * PdfScaler constructor.
      *
      * @param \Relaxsd\Pdflax\Contracts\PdfDocumentInterface $pdf
-     * @param float|string                           $x
-     * @param float|string                           $y
-     * @param float|string                           $w
-     * @param float|string                           $h
+     * @param float|string                                   $x
+     * @param float|string                                   $y
+     * @param float|string                                   $w
+     * @param float|string                                   $h
      */
     public function __construct($pdf, $x, $y, $w, $h)
     {
@@ -72,7 +73,11 @@ class PdfView implements PdfDocumentInterface
 
     protected function initializeStyles()
     {
-        // Subclass can implement this
+        $this->stylesheet = Stylesheet::scaled(
+            $this->pdf->getStylesheet(),
+            $this->scale_h(),
+            $this->scale_v()
+        );
     }
 
     /**
@@ -168,10 +173,10 @@ class PdfView implements PdfDocumentInterface
     }
 
     /**
-     * @param float|string               $x
-     * @param float|string               $y
-     * @param float|string               $w
-     * @param float|string               $h
+     * @param float|string                          $x
+     * @param float|string                          $y
+     * @param float|string                          $w
+     * @param float|string                          $h
      * @param \Relaxsd\Stylesheets\Style|array|null $style
      *
      * @return $this
@@ -192,10 +197,10 @@ class PdfView implements PdfDocumentInterface
     }
 
     /**
-     * @param float|string               $x1
-     * @param float|string               $y1
-     * @param float|string               $x2
-     * @param float|string               $y2
+     * @param float|string                          $x1
+     * @param float|string                          $y1
+     * @param float|string                          $x2
+     * @param float|string                          $y2
      * @param \Relaxsd\Stylesheets\Style|array|null $style
      *
      * @return $this
@@ -216,31 +221,33 @@ class PdfView implements PdfDocumentInterface
     }
 
     /**
-     * @param float|string $h
-     * @param string       $text
-     * @param string       $link
+     * @param float|string               $h
+     * @param string                     $text
+     * @param string                     $link
+     * @param \Relaxsd\Stylesheets\Style|array|null $style
      *
      * @return $this
      */
-    public function write($h, $text, $link = '')
+    public function write($h, $text, $link = '', $style = null)
     {
         $this->pdf->write(
             $this->scaleToGlobal_v($h),
             $text,
-            $link
+            $link,
+            $this->scaledStyle($style)
         );
 
         return $this;
     }
 
     /**
-     * @param string                     $file
-     * @param float|string               $x
-     * @param float|string               $y
-     * @param float|string               $w
-     * @param float|string               $h
-     * @param string                     $type
-     * @param string                     $link
+     * @param string                                $file
+     * @param float|string                          $x
+     * @param float|string                          $y
+     * @param float|string                          $w
+     * @param float|string                          $h
+     * @param string                                $type
+     * @param string                                $link
      * @param \Relaxsd\Stylesheets\Style|array|null $style
      *
      *
@@ -531,9 +538,9 @@ class PdfView implements PdfDocumentInterface
     }
 
     /**
-     * @param float|string              $w
-     * @param float|string              $h
-     * @param string                    $txt
+     * @param float|string                    $w
+     * @param float|string                    $h
+     * @param string                          $txt
      * @param \Relaxsd\Stylesheets\Style|null $style
      *
      * @return $this
@@ -586,6 +593,32 @@ class PdfView implements PdfDocumentInterface
     public function setAutoPageBreak($auto, $margin = 0)
     {
         $this->pdf->setAutoPageBreak($auto, $margin);
+
+        return $this;
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return $this
+     */
+    public function setFontPath($path)
+    {
+        $this->fpdf->setFontPath($path);
+
+        return $this;
+    }
+
+    /**
+     * @param string  $family
+     * @param integer $style
+     * @param string  $filename
+     *
+     * @return $this
+     */
+    public function registerFont($family, $style, $filename)
+    {
+        $this->fpdf->registerFont($family, $style, $filename);
 
         return $this;
     }

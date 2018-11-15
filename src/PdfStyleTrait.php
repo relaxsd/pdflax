@@ -2,6 +2,8 @@
 
 namespace Relaxsd\Pdflax;
 
+use Relaxsd\Stylesheets\Stylesheet;
+
 /**
  * Class PdfStyleTrait
  */
@@ -24,7 +26,7 @@ trait PdfStyleTrait
     }
 
     /**
-     * @param \Relaxsd\Stylesheets\Stylesheet $stylesheet
+     * @param \Relaxsd\Stylesheets\Stylesheet|array $stylesheet
      *
      * @return $this
      */
@@ -33,7 +35,7 @@ trait PdfStyleTrait
         if (isset($this->stylesheet)) {
             $this->stylesheet->add($stylesheet);
         } else {
-            $this->stylesheet = $stylesheet;
+            $this->stylesheet = Stylesheet::stylesheet($stylesheet);
         }
 
         return $this;

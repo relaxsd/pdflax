@@ -2,7 +2,7 @@
 
 namespace Relaxsd\Pdflax\Contracts;
 
-interface PdfDocumentInterface extends PdfDOMInterface, PdfMarginInterface, PdfFormattingInterface
+interface PdfDocumentInterface extends PdfDOMInterface, PdfMarginInterface, PdfFormattingInterface, PdfStyleInterface
 {
 
     const RECT_STYLE_BORDER = 0x001;
@@ -135,6 +135,22 @@ interface PdfDocumentInterface extends PdfDOMInterface, PdfMarginInterface, PdfF
      * @throws \Relaxsd\Pdflax\Exceptions\UnsupportedFeatureException
      */
     public function addPage($orientation = null, $size = null);
+
+    /**
+     * @param string $path
+     *
+     * @return $this
+     */
+    public function setFontPath($path);
+
+    /**
+     * @param string $family
+     * @param integer $style
+     * @param string $filename
+     *
+     * @return $this
+     */
+    public function registerFont($family, $style, $filename);
 
     /**
      * @param string $fileName
