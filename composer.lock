@@ -12,7 +12,7 @@
             "source": {
                 "type": "git",
                 "url": "ssh://git@git.relax-software.nl:31422/git/relaxsd/php-stylesheets.git",
-                "reference": "72f203f3c117cc04df5353c33b3ead1b263f5b8d"
+                "reference": "d81ccf6b145aac570b18e43fef92845bf8910b39"
             },
             "require": {
                 "php": ">=5.4.0"
@@ -37,7 +37,7 @@
                 }
             ],
             "description": "Some stylesheet classes for PHP.",
-            "time": "2018-11-06T16:24:43+00:00"
+            "time": "2018-11-13T00:29:55+00:00"
         }
     ],
     "packages-dev": [
@@ -1054,7 +1054,7 @@
         },
         {
             "name": "symfony/polyfill-ctype",
-            "version": "v1.9.0",
+            "version": "v1.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-ctype.git",
@@ -1112,16 +1112,16 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v3.4.15",
+            "version": "v3.4.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "c2f4812ead9f847cb69e90917ca7502e6892d6b8"
+                "reference": "640b6c27fed4066d64b64d5903a86043f4a4de7f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/c2f4812ead9f847cb69e90917ca7502e6892d6b8",
-                "reference": "c2f4812ead9f847cb69e90917ca7502e6892d6b8",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/640b6c27fed4066d64b64d5903a86043f4a4de7f",
+                "reference": "640b6c27fed4066d64b64d5903a86043f4a4de7f",
                 "shasum": ""
             },
             "require": {
@@ -1167,7 +1167,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2018-08-10T07:34:36+00:00"
+            "time": "2018-10-02T16:33:53+00:00"
         },
         {
             "name": "webmozart/assert",
