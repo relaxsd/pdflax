@@ -24,7 +24,7 @@ trait PdfDOMTrait
 
         $width = $this->getWidth() - $this->getLeftMargin() - $this->getRightMargin();
 
-        return $this->block($width, 8, $caption, $style);
+        return $this->cell($width, 8, $caption, $style);
     }
 
     /**
@@ -42,7 +42,7 @@ trait PdfDOMTrait
         $width = $this->getWidth() - $this->getLeftMargin() - $this->getRightMargin();
 
         // TODO: Use $this->fpdf->FontSizePt?
-        return $this->block($width, 8, $caption, $style);
+        return $this->cell($width, 8, $caption, $style);
     }
 
     /**
@@ -60,21 +60,7 @@ trait PdfDOMTrait
         $width = $this->getWidth() - $this->getLeftMargin() - $this->getRightMargin();
 
         // TODO: Use $this->fpdf->FontSizePt?
-        return $this->block($width, 6, $text, $style);
+        return $this->cell($width, 6, $text, $style);
     }
 
-    /**
-     * @param float|string $width
-     * @param float|string $height
-     * @param string       $caption
-     * @param \Relaxsd\Stylesheets\Style|array $style
-     *
-     * @return $this
-     */
-    public function block($width, $height, $caption, $style = null)
-    {
-        $style = Style::merged($this->getStyle('block'), $style);
-
-        return $this->cell($width, $height, $caption, $style);
-    }
 }

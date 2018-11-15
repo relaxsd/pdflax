@@ -540,7 +540,7 @@ class PdfView implements PdfDocumentInterface
      */
     public function cell($w, $h = 0.0, $txt = '', $style = null)
     {
-        $style = Style::merged($this->getStyle('cell'), $style);
+        $style = Style::merged($this->getStyle('body'), $this->getStyle('cell'), $style);
 
         $originalY    = $this->pdf->getCursorY();
         $originalPage = $this->pdf->getPage();
