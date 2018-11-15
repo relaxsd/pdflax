@@ -73,4 +73,18 @@ interface PdfCreatorOptionsInterface
      */
     public function withPageSize($width, $height = null);
 
+    /**
+     * @param boolean $value
+     *
+     * @return $this
+     */
+    public function useCompression($value = true);
+
+    /**
+     * @param string $path
+     *
+     * @return $this
+     */
+    public function setFontPath($path);
+    
 }

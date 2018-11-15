@@ -144,4 +144,27 @@ trait HasPdfCreatorOptions
         return $this;
     }
 
+    /**
+     * @param boolean $value
+     *
+     * @return $this
+     */
+    public function useCompression($value = true)
+    {
+        $this->options['compression'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return $this
+     */
+    public function setFontPath($path)
+    {
+        $this->options['font-path'] = $path;
+
+        return $this;
+    }
 }
