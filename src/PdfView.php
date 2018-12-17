@@ -27,19 +27,19 @@ class PdfView implements PdfDocumentInterface
      */
     protected $y;
     /**
-     * @var float|string
+     * @var float|string|null
      */
     protected $w;
     /**
-     * @var float|string
+     * @var float|string|null
      */
     protected $h;
     /**
-     * @var float
+     * @var float|null
      */
     protected $localWidth;
     /**
-     * @var float
+     * @var float|null
      */
     protected $localHeight;
 
@@ -47,24 +47,24 @@ class PdfView implements PdfDocumentInterface
      * PdfView constructor.
      *
      * @param \Relaxsd\Pdflax\Contracts\PdfDocumentInterface $pdf
-     * @param float|string                                   $x
-     * @param float|string                                   $y
-     * @param float|string                                   $w
-     * @param float|string                                   $h
+     * @param float|string|null                              $x
+     * @param float|string|null                              $y
+     * @param float|string|null                              $w
+     * @param float|string|null                              $h
      * @param \Relaxsd\Stylesheets\Stylesheet|array|null     $stylesheet
      */
-    public function __construct($pdf, $x, $y, $w, $h, $stylesheet = [])
+    public function __construct($pdf, $x = null, $y = null, $w = null, $h = null, $stylesheet = [])
     {
         $this->pdf = $pdf;
 
         // In case percentages were given, relate them to the parent
         // All values may be null and will stay null then.
-        $this->x = $x;
-        $this->y = $y;
-        $this->w = $w;
-        $this->h = $h;
+        $this->x = isset($x) ? $x : $pdf->getCursorX();
+        $this->y = isset($y) ? $y : $pdf->getCursorY();
+        $this->w = $w; // may be null
+        $this->h = $h; // may be null
 
-        // Initialise reference size (always floats)
+        // Initialise reference size (always floats or null)
         $this->localWidth  = $this->parseGlobalValue_h($w); // Handles percentages, like '50%"
         $this->localHeight = $this->parseGlobalValue_v($h); // Handles percentages, like '50%"
 
@@ -427,7 +427,7 @@ class PdfView implements PdfDocumentInterface
     /**
      * Gets this components width (in terms of the parent coordinate system)
      *
-     * @return float
+     * @return float|null
      */
     public function getWidth()
     {
@@ -438,7 +438,7 @@ class PdfView implements PdfDocumentInterface
     /**
      * Gets this components height (in terms of the parent coordinate system)
      *
-     * @return float
+     * @return float|null
      */
     public function getHeight()
     {
@@ -599,7 +599,7 @@ class PdfView implements PdfDocumentInterface
 
             // Multiline cells have default ln=2, cell have ln=0
             $default = Multiline::translate($style) ? 2 : 0;
-            $ln = Style::value($style, 'ln', $default);
+            $ln      = Style::value($style, 'ln', $default);
 
             if ($ln > 0) {
                 $newY -= $this->scaleToGlobal_v($h);
