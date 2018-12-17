@@ -472,7 +472,7 @@ class PdfView implements PdfDocumentInterface
     protected function parseGlobalValue_h($globalValue)
     {
         return (is_string($globalValue))
-            ? $this->getParentWidth() * floatval($globalValue) / 100
+            ? $this->getParentInnerWidth() * floatval($globalValue) / 100
             : $globalValue;
     }
 
@@ -517,9 +517,9 @@ class PdfView implements PdfDocumentInterface
     /**
      * @return float
      */
-    protected function getParentWidth()
+    protected function getParentInnerWidth()
     {
-        return $this->pdf->getWidth();
+        return $this->pdf->getWidth() - $this->pdf->getLeftMargin() - $this->pdf->getRightMargin();
     }
 
     /**
