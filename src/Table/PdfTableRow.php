@@ -140,7 +140,7 @@ class PdfTableRow
 
         if ($columnIndex == 0) {
             $rowStyle = $this->getStyle('tr');
-            $padding  = $rowStyle ? $rowStyle->getValue('padding-left', 0) : 0;
+            $padding  = Style::value($rowStyle, 'padding-left', 0);
 
             // Add padding
             $x           += $padding;
