@@ -53,7 +53,7 @@ trait PdfDOMTrait
      */
     public function p($text = '', $style = null)
     {
-        $style = Style::merged($this->getStyle('h3'), $style);
+        $style = Style::merged($this->getStyle('p'), $style);
 
         $this->setCursorX($this->getLeftMargin());
 
