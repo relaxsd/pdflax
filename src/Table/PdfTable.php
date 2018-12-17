@@ -3,94 +3,104 @@
 namespace Relaxsd\Pdflax\Table;
 
 use Relaxsd\Pdflax\PdfView;
-use Relaxsd\Pdflax\Helpers\Arr;
+use Relaxsd\Stylesheets\Stylesheet;
 
 class PdfTable extends PdfView
 {
 
-    protected $options = [
+    protected static $styles = [
 
         'row' => [
             'height' => '8'
         ],
 
         'cell' => [
-            'align'  => 'L',
+            'align'  => 'left',
             'height' => '8',
             'ln'     => 0,
             'border' => 0,
         ],
 
-        'width'  => 300, // TODO: auto-grow by adding columns
-        'height' => 300, // TODO: auto-grow by adding rows
-
     ];
 
     protected $columns = [];
 
+    protected $rows = [];
+
     protected $headerRow;
 
     /**
-     * FpdfTable constructor.
+     * PdfTable constructor.
      *
      * @param \Relaxsd\Pdflax\Contracts\PdfDocumentInterface $document
-     * @param array                                  $options
+     * @param float|string|null                              $x
+     * @param float|string|null                              $y
+     * @param float|string                                   $w
+     * @param float|string                                   $h
+     * @param \Relaxsd\Stylesheets\Stylesheet|array|null     $stylesheet
      */
-    public function __construct($document, $options = [])
+    public function __construct($document, $x = null, $y = null, $w = 0.0, $h = 0.0, $stylesheet = [])
     {
-        $this->options = Arr::mergeRecursiveConfig($this->options,
-            [
-                'x' => $document->getCursorX(),
-                'y' => $document->getCursorY(),
-            ],
-            $options
-        );
 
-        // TODO
-        parent::__construct($document,
-            $this->options['x'],
-            $this->options['y'],
-            $this->options['width'],
-            $this->options['height']
-        // + style: []
-        );
+        $x = isset($x) ? $x : $document->getCursorX();
+        $y = isset($y) ? $y : $document->getCursorY();
 
+        $stylesheet = (new Stylesheet(self::$styles))->add($stylesheet);
+
+        parent::__construct($document, $x, $y, $w, $h, $stylesheet);
         //$this->setReferenceSize(100,100);
     }
 
     /**
-     * @param float|string $width
-     * @param array|string $styles
+     * @param float|string                               $width
+     * @param \Relaxsd\Stylesheets\Stylesheet|array|null $stylesheet
      *
      * @return $this
      */
-    public function column($width, $styles = [])
+    public function column($width, $stylesheet = [])
     {
 
         $columnCount = count($this->columns);
 
         /** @var PdfTableColumn $previousColumn */
-        $previousColumn = $columnCount ? $this->columns[$columnCount - 1] : null;
+        $previousColumn = $columnCount
+            ? $this->columns[$columnCount - 1]
+            : null;
 
-        // Determine the x position (float) based on the previous columns x + width (string or float)
-        $x = isset($previousColumn) ? ($previousColumn->getX() + $this->parseGlobalValue_h($previousColumn->getWidth())) : 0;
+        // Determine the x position (float) based on the previous columns x + width (both string or float)
+        $x = isset($previousColumn)
+            ? ($previousColumn->getX(true) + $previousColumn->getWidth(true))
+            : 0;
 
-        $this->columns[] = new PdfTableColumn($this, $x, $width, $styles);
+        $this->columns[] = new PdfTableColumn($this, $x, $width, $stylesheet);
 
         return $this;
     }
 
     /**
-     * @param array|string $styles
-     * @param float        $h
+     * @param float                                      $h
+     * @param \Relaxsd\Stylesheets\Stylesheet|array|null $stylesheet
      *
      * @return PdfTableRow
-     * @internal param array $options
      */
-    public function row($styles = [], $h = 10.0)
+    public function row($h = 10.0, $stylesheet = [])
     {
-        // Note that row height is passed via columns
-        return new PdfTableRow($this, $h, $styles);
+        $rowCount = count($this->rows);
+
+        /** @var PdfTableRow $previousRow */
+        $previousRow = $rowCount
+            ? $this->rows[$rowCount - 1]
+            : null;
+
+        // Determine the x position (float) based on the previous rows x + width (both string or float)
+        $y = isset($previousRow)
+            ? ($previousRow->getY(true) + $previousRow->getHeight(true))
+            : 0;
+
+        $this->rows[] = $row = new PdfTableRow($this, $y, $h, $stylesheet);
+
+        return $row;
+
     }
 
     /**

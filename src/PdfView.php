@@ -43,15 +43,16 @@ class PdfView implements PdfDocumentInterface
     protected $localHeight;
 
     /**
-     * PdfScaler constructor.
+     * PdfView constructor.
      *
      * @param \Relaxsd\Pdflax\Contracts\PdfDocumentInterface $pdf
      * @param float|string                                   $x
      * @param float|string                                   $y
      * @param float|string                                   $w
      * @param float|string                                   $h
+     * @param \Relaxsd\Stylesheets\Stylesheet|array|null     $stylesheet
      */
-    public function __construct($pdf, $x, $y, $w, $h)
+    public function __construct($pdf, $x, $y, $w, $h, $stylesheet = [])
     {
         $this->pdf = $pdf;
 
@@ -67,17 +68,20 @@ class PdfView implements PdfDocumentInterface
         $this->localHeight = $this->parseGlobalValue_v($h); // Handles percentages, like '50%"
 
         // Initialize styles, including the ones pass to this method
-        $this->initializeStyles();
+        $this->initializeStyles($stylesheet);
 
     }
 
-    protected function initializeStyles()
+    /**
+     * @param \Relaxsd\Stylesheets\Stylesheet|array|null $stylesheet
+     */
+    protected function initializeStyles($stylesheet)
     {
         $this->stylesheet = Stylesheet::scaled(
             $this->pdf->getStylesheet(),
             $this->scale_h(),
             $this->scale_v()
-        );
+        )->add($stylesheet);
     }
 
     /**
@@ -221,9 +225,9 @@ class PdfView implements PdfDocumentInterface
     }
 
     /**
-     * @param float|string               $h
-     * @param string                     $text
-     * @param string                     $link
+     * @param float|string                          $h
+     * @param string                                $text
+     * @param string                                $link
      * @param \Relaxsd\Stylesheets\Style|array|null $style
      *
      * @return $this
@@ -441,6 +445,22 @@ class PdfView implements PdfDocumentInterface
         return $this->parseGlobalValue_v($this->h);
     }
 
+    /**
+     * @return float
+     */
+    public function getLocalWidth()
+    {
+        return $this->localWidth;
+    }
+
+    /**
+     * @return float
+     */
+    public function getLocalHeight()
+    {
+        return $this->localHeight;
+    }
+
     // -----------
 
     /**
@@ -538,9 +558,9 @@ class PdfView implements PdfDocumentInterface
     }
 
     /**
-     * @param float|string                    $w
-     * @param float|string                    $h
-     * @param string                          $txt
+     * @param float|string                          $w
+     * @param float|string                          $h
+     * @param string                                $txt
      * @param \Relaxsd\Stylesheets\Style|array|null $style
      *
      * @return $this

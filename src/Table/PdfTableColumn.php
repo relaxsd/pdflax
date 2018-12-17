@@ -2,76 +2,82 @@
 
 namespace Relaxsd\Pdflax\Table;
 
+use Relaxsd\Pdflax\PdfStyleTrait;
+use Relaxsd\Stylesheets\Stylesheet;
+
 class PdfTableColumn
 {
+
+    use PdfStyleTrait;
 
     /** @var  PdfTable */
     protected $table;
 
     /**
-     * X-coodinate of this column
-     *
-     * @var float
-     */
-    protected $x = 0;
-
-    /**
-     * Width of this column (also supports percentages, like "40%")
+     * X-coordinate of this column (within the table)
      *
      * @var float|string
      */
-    protected $w = 0;
+    protected $x = 0.0;
 
     /**
-     * PDF styles for this column
-     * - contain styles like [ 'align' => 'R' ]
-     * - contain class names or a mix like [ 'h1', [ 'align' => 'R']]
+     * Width of this column (also supports percentages relative to the table, like "40%")
      *
-     * @var  array
+     * @var float|string
      */
-    protected $styles;
+    protected $w = 0.0;
 
     /**
      * PdfTableColumn constructor.
      *
-     * @param PdfTable     $table
-     * @param float        $x
-     * @param float|string $w
-     * @param array|string $styles
+     * @param PdfTable                                   $table
+     * @param float                                      $x
+     * @param float|string                               $w
+     * @param \Relaxsd\Stylesheets\Stylesheet|array|null $stylesheet
      */
-    public function __construct($table, $x, $w = 20.0, $styles = [])
+    public function __construct($table, $x, $w = 20.0, $stylesheet = [])
     {
-        $this->table  = $table;
-        $this->x      = $x;
-        $this->w      = $w;
-        $this->styles = (array)$styles;
+        $this->table = $table;
+        $this->x     = $x;
+        $this->w     = $w;
+
+        $this->stylesheet = Stylesheet::stylesheet($stylesheet);
     }
 
     /**
-     * @return float
-     */
-    public function getX()
-    {
-        return $this->x;
-    }
-
-    /**
+     * @param boolean $parsed
+     *
      * @return float|string
      */
-    public function getWidth()
+    public function getX($parsed = false)
     {
-        return $this->w;
+        return $parsed
+            ? $this->parseLocalValue_h($this->x)
+            : $this->x;
     }
 
     /**
-     * Return PDF styles for this column.
-     * Always an array, containing styles names or stylesheet.
+     * @param boolean $parsed
      *
-     * @return array
+     * @return float|string
      */
-    public function getStyles()
+    public function getWidth($parsed = false)
     {
-        return $this->styles;
+        return $parsed
+            ? $this->parseLocalValue_h($this->w)
+            : $this->w;
+    }
+
+    /**
+     * @param float|string|null $localValue
+     *
+     * @return float|null
+     */
+    protected function parseLocalValue_h($localValue)
+    {
+        return (is_string($localValue))
+            ? $this->table->getLocalWidth() * floatval($localValue) / 100
+            : $localValue;
     }
 
 }
