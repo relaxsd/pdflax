@@ -506,4 +506,30 @@ class PdfViewTest extends TestCase
         $this->assertEquals($this->pdfView->getRightMargin(), 12.5);
     }
 
+    /**
+     * @test
+     */
+    public function it_sets_and_returns_a_top_margin()
+    {
+        $self = $this->pdfView->setTopMargin(12.5);
+
+        // Assert fluent interface
+        $this->assertSame($this->pdfView, $self);
+
+        $this->assertEquals($this->pdfView->getTopMargin(), 12.5);
+    }
+
+    /**
+     * @test
+     */
+    public function it_sets_and_returns_a_bottom_margin()
+    {
+        $self = $this->pdfView->setBottomMargin(12.5);
+
+        // Assert fluent interface
+        $this->assertSame($this->pdfView, $self);
+
+        $this->assertEquals($this->pdfView->getBottomMargin(), 12.5);
+    }
+
 }

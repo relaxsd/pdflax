@@ -8,15 +8,17 @@ namespace Relaxsd\Pdflax;
 trait PdfMarginTrait
 {
 
-    /**
-     * @var float
-     */
-    protected $leftMargin = 0;
+    /** @var float */
+    protected $leftMargin = 0.0;
 
-    /**
-     * @var float
-     */
-    protected $rightMargin = 0;
+    /** @var float */
+    protected $rightMargin = 0.0;
+
+    /** @var float */
+    protected $topMargin = 0.0;
+
+    /** @var float */
+    protected $bottomMargin = 0.0;
 
     /**
      * @return float
@@ -54,6 +56,46 @@ trait PdfMarginTrait
     public function setRightMargin($rightMargin)
     {
         $this->rightMargin = $rightMargin;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getTopMargin()
+    {
+        return $this->topMargin;
+    }
+
+    /**
+     * @param $topMargin
+     *
+     * @return $this
+     */
+    public function setTopMargin($topMargin)
+    {
+        $this->topMargin = $topMargin;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getBottomMargin()
+    {
+        return $this->bottomMargin;
+    }
+
+    /**
+     * @param $bottomMargin
+     *
+     * @return $this
+     */
+    public function setBottomMargin($bottomMargin)
+    {
+        $this->bottomMargin = $bottomMargin;
 
         return $this;
     }

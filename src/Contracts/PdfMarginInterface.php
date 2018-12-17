@@ -29,4 +29,28 @@ interface PdfMarginInterface
      */
     public function getRightMargin();
 
+    /**
+     * @param $topMargin
+     *
+     * @return self
+     */
+    public function setTopMargin($topMargin);
+
+    /**
+     * @return float
+     */
+    public function getTopMargin();
+
+    /**
+     * @param $bottomMargin
+     *
+     * @return self
+     */
+    public function setBottomMargin($bottomMargin);
+
+    /**
+     * @return float
+     */
+    public function getBottomMargin();
+
 }
