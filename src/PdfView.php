@@ -3,6 +3,7 @@
 namespace Relaxsd\Pdflax;
 
 use Relaxsd\Pdflax\Contracts\PdfDocumentInterface;
+use Relaxsd\Pdflax\Fpdf\Translators\Multiline;
 use Relaxsd\Stylesheets\Style;
 use Relaxsd\Stylesheets\Stylesheet;
 
@@ -593,7 +594,14 @@ class PdfView implements PdfDocumentInterface
             // TODO: Maybe use the page size (minus top/bottom margins)? The view moved one page backwards?
             $newY = $this->pdf->getCursorY();
 
-            if ($options['ln'] > 0) {
+            // TODO: Fpdf specific.
+            // Idea: Use an event for new page?
+
+            // Multiline cells have default ln=2, cell have ln=0
+            $default = Multiline::translate($style) ? 2 : 0;
+            $ln = Style::value($style, 'ln', $default);
+
+            if ($ln > 0) {
                 $newY -= $this->scaleToGlobal_v($h);
             }
 
