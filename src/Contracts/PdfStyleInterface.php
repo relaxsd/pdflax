@@ -17,13 +17,13 @@ interface PdfStyleInterface
      *
      * @return \Relaxsd\Stylesheets\Stylesheet
      */
-    //public function getStylesheet();
+    public function getStylesheet();
 
     /**
      * @param string $element
      *
      * @return null|\Relaxsd\Stylesheets\Style
      */
-    //public function getStyle($element);
+    public function getStyle($element);
 
 }
