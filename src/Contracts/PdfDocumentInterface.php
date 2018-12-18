@@ -9,11 +9,6 @@ interface PdfDocumentInterface extends PdfDOMInterface, PdfMarginInterface, PdfF
     const RECT_STYLE_FILL = 0x01;
     const RECT_STYLE_BORDER_AND_FILL = 0x011; // Both
 
-    const FONT_STYLE_NORMAL = '';
-    const FONT_STYLE_BOLD = 'bold';
-    const FONT_STYLE_ITALIC = 'italic';
-    const FONT_STYLE_UNDERLINE = 'underline';
-
     /**
      * Get the current page number.
      *
