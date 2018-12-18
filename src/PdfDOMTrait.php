@@ -20,9 +20,9 @@ trait PdfDOMTrait
     {
         $style = Style::merged($this->getStyle('h1'), $style);
 
-        $this->setCursorX($this->getLeftMargin());
+        $this->setCursorX(0);
 
-        $width = $this->getWidth() - $this->getLeftMargin() - $this->getRightMargin();
+        $width = $this->getInnerWidth();
 
         return $this->cell($width, 8, $caption, $style);
     }
@@ -37,9 +37,9 @@ trait PdfDOMTrait
     {
         $style = Style::merged($this->getStyle('h2'), $style);
 
-        $this->setCursorX($this->getLeftMargin());
+        $this->setCursorX(0);
 
-        $width = $this->getWidth() - $this->getLeftMargin() - $this->getRightMargin();
+        $width = $this->getInnerWidth();
 
         // TODO: Use $this->fpdf->FontSizePt?
         return $this->cell($width, 8, $caption, $style);
@@ -55,9 +55,9 @@ trait PdfDOMTrait
     {
         $style = Style::merged($this->getStyle('p'), $style);
 
-        $this->setCursorX($this->getLeftMargin());
+        $this->setCursorX(0);
 
-        $width = $this->getWidth() - $this->getLeftMargin() - $this->getRightMargin();
+        $width = $this->getInnerWidth();
 
         // TODO: Use $this->fpdf->FontSizePt?
         return $this->cell($width, 6, $text, $style);

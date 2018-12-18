@@ -472,7 +472,7 @@ class PdfView implements PdfDocumentInterface
     protected function parseGlobalValue_h($globalValue)
     {
         return (is_string($globalValue))
-            ? $this->getParentInnerWidth() * floatval($globalValue) / 100
+            ? $this->pdf->getInnerWidth() * floatval($globalValue) / 100
             : $globalValue;
     }
 
@@ -484,7 +484,7 @@ class PdfView implements PdfDocumentInterface
     protected function parseGlobalValue_v($globalValue)
     {
         return (is_string($globalValue))
-            ? $this->getParentInnerHeight() * floatval($globalValue) / 100
+            ? $this->pdf->getInnerHeight() * floatval($globalValue) / 100
             : $globalValue;
     }
 
@@ -513,22 +513,6 @@ class PdfView implements PdfDocumentInterface
     }
 
     // -----------------
-
-    /**
-     * @return float
-     */
-    protected function getParentInnerWidth()
-    {
-        return $this->pdf->getWidth() - $this->pdf->getLeftMargin() - $this->pdf->getRightMargin();
-    }
-
-    /**
-     * @return float
-     */
-    protected function getParentInnerHeight()
-    {
-        return $this->pdf->getHeight()- $this->pdf->getTopMargin() - $this->pdf->getBottomMargin();
-    }
 
     /**
      * Get the current X position of the 'cursor' (in the local coordinate system)

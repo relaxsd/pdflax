@@ -57,8 +57,8 @@ class PdfViewTest extends TestCase
     {
 
         // Let the pdf tell the view that its size is 100x200
-        $this->pdfMock->expects($this->atLeastOnce())->method('getWidth')->willReturn(100);
-        $this->pdfMock->expects($this->atLeastOnce())->method('getHeight')->willReturn(200);
+        $this->pdfMock->expects($this->atLeastOnce())->method('getInnerWidth')->willReturn(100);
+        $this->pdfMock->expects($this->atLeastOnce())->method('getInnerHeight')->willReturn(200);
 
         // Create a view in that document, at 10,20, 50% of parent width/height (50x100).
         $this->pdfView = new PdfView($this->pdfMock, 10, 20, '50%', '50%');
