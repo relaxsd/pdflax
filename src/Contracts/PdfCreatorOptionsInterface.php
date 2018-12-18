@@ -86,5 +86,20 @@ interface PdfCreatorOptionsInterface
      * @return $this
      */
     public function setFontPath($path);
-    
+
+    /**
+     * @param float $left
+     * @param float $right
+     * @param float $top
+     * @param float $bottom
+     *
+     * @return $this
+     */
+    public function withMargins($left, $right = 0.0, $top = 0.0, $bottom = 0.0);
+
+    /**
+     * @return $this
+     */
+    public function withoutMargins();
+
 }

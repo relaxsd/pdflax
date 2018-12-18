@@ -128,6 +128,31 @@ trait HasPdfCreatorOptions
     }
 
     /**
+     * @param float $left
+     * @param float $right
+     * @param float $top
+     * @param float $bottom
+     *
+     * @return $this
+     */
+    public function withMargins($left, $right = 0.0, $top = 0.0, $bottom = 0.0)
+    {
+        $this->options['margins'] = [$left, $right, $top, $bottom];
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function withoutMargins()
+    {
+        $this->options['margins'] = [0.0, 0.0, 0.0, 0.0];
+
+        return $this;
+    }
+
+    /**
      * @param integer|string $width
      * @param integer|null   $height
      *

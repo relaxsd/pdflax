@@ -88,4 +88,16 @@ class PdfCreatorTest extends TestCase
         $this->assertEquals($this->stub->getOption('size'), [10, 20]);
     }
 
+    /**
+     * @test
+     */
+    public function it_sets_margins()
+    {
+        $this->stub->withMargins(1, 2, 3, 4);
+        $this->assertEquals($this->stub->getOption('margins'), [1, 2, 3, 4]);
+
+        $this->stub->withoutMargins();
+        $this->assertEquals($this->stub->getOption('margins'), [0.0, 0.0, 0.0, 0.0]);
+    }
+
 }
