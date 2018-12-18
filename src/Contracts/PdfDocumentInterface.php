@@ -22,32 +22,46 @@ interface PdfDocumentInterface extends PdfDOMInterface, PdfMarginInterface, PdfF
     public function getPage();
 
     /**
-     * Get the X-position of this document in it parent.
+     * Get the X-position of this document in its parent
      *
      * @return float
      */
     public function getX();
 
     /**
-     * Get the Y-position of this document in it parent.
+     * Get the Y-position of this document in its parent
      *
      * @return float
      */
     public function getY();
 
     /**
-     * Get the width of this document in it parent.
+     * Get the total width of this document, including its left and right margins
      *
      * @return float
      */
     public function getWidth();
 
     /**
-     * Get the height of this document in it parent.
+     * Get the total height of this document, including its top and bottom margins
      *
      * @return float
      */
     public function getHeight();
+
+    /**
+     * Get the inner width of this document, between its left and right margins
+     *
+     * @return float
+     */
+    public function getInnerWidth();
+
+    /**
+     * Get the inner height of this document, between its top and bottom margins
+     *
+     * @return float
+     */
+    public function getInnerHeight();
 
     /**
      * Get the (local) X-position of the cursor.

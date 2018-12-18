@@ -425,7 +425,7 @@ class PdfView implements PdfDocumentInterface
     }
 
     /**
-     * Gets this components width (in terms of the parent coordinate system)
+     * Get the total width of this document, including its left and right margins
      *
      * @return float|null
      */
@@ -436,7 +436,7 @@ class PdfView implements PdfDocumentInterface
     }
 
     /**
-     * Gets this components height (in terms of the parent coordinate system)
+     * Get the total height of this document, including its top and bottom margins
      *
      * @return float|null
      */

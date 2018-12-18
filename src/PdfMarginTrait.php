@@ -100,4 +100,26 @@ trait PdfMarginTrait
         return $this;
     }
 
+    // ==================================================
+
+    /**
+     * Get the inner width of this document, between its left and right margins
+     *
+     * @return float
+     */
+    public function getInnerWidth()
+    {
+        return $this->getWidth() - $this->getLeftMargin() - $this->getRightMargin();
+    }
+
+    /**
+     * Get the inner height of this document, between its top and bottom margins
+     *
+     * @return float
+     */
+    public function getInnerHeight()
+    {
+        return $this->getHeight() - $this->getTopMargin() - $this->getBottomMargin();
+    }
+
 }
