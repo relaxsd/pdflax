@@ -5,10 +5,6 @@ namespace Relaxsd\Pdflax\Contracts;
 interface PdfDocumentInterface extends PdfDOMInterface, PdfMarginInterface, PdfFormattingInterface, PdfStyleInterface
 {
 
-    const RECT_STYLE_BORDER = 0x001;
-    const RECT_STYLE_FILL = 0x01;
-    const RECT_STYLE_BORDER_AND_FILL = 0x011; // Both
-
     /**
      * Get the current page number.
      *
