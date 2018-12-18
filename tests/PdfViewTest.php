@@ -4,7 +4,6 @@ use PHPUnit\Framework\TestCase;
 use Relaxsd\Pdflax\Contracts\CurrencyFormatterInterface;
 use Relaxsd\Pdflax\Contracts\PdfCreatorOptionsInterface;
 use Relaxsd\Pdflax\PdfView;
-use Relaxsd\Pdflax\Style\Styles;
 use Relaxsd\Stylesheets\Style;
 use Relaxsd\Stylesheets\Stylesheet;
 
