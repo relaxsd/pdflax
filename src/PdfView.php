@@ -544,54 +544,6 @@ class PdfView implements PdfDocumentInterface
     }
 
     /**
-     * @param float|string                          $w
-     * @param float|string                          $h
-     * @param string                                $txt
-     * @param \Relaxsd\Stylesheets\Style|array|null $style
-     *
-     * @return $this
-     */
-    public function cell($w, $h = 0.0, $txt = '', $style = null)
-    {
-        $style = Style::merged($this->getStyle('body'), $this->getStyle('cell'), $style);
-
-        $originalY    = $this->pdf->getCursorY();
-        $originalPage = $this->pdf->getPage();
-
-        $this->pdf->cell(
-            $this->scaleToGlobal_h($w),
-            $this->scaleToGlobal_v($h),
-            $txt,
-            $this->scaledStyle($style)
-        );
-
-        // If a automatic page-break is detected, move the entire view accordingly
-        $newPage = $this->pdf->getPage();
-
-        if ($newPage != $originalPage) {
-
-            // TODO: Maybe just use the inner page height? The view moved one page backwards?
-            $newY = $this->pdf->getCursorY();
-
-            // For Multiline cells, assume 'bottom left' cursor placement, else 'top right'
-            $default         = Style::value($style, Multiline::ATTRIBUTE, false) ? CursorPlacement::CURSOR_BOTTOM_LEFT : CursorPlacement::CURSOR_TOP_RIGHT;
-            $cursorPlacement = Style::value($style, CursorPlacement::ATTRIBUTE, $default);
-
-            if ($cursorPlacement === CursorPlacement::CURSOR_BOTTOM_LEFT || $cursorPlacement === CursorPlacement::CURSOR_BOTTOM_RIGHT || $cursorPlacement === CursorPlacement::CURSOR_NEWLINE) {
-                // If the cursor is at the bottom of the cell, subtract the cell height to determine
-                // where the cell would have started on the new page.
-                $newY -= $this->scaleToGlobal_v($h);
-            }
-
-            // Then move our view up accordingly.
-            $this->y += $newY - $originalY;
-
-        }
-
-        return $this;
-    }
-
-    /**
      * @param     $auto
      * @param int $margin
      *
@@ -685,5 +637,65 @@ class PdfView implements PdfDocumentInterface
     {
         return $this->pdf->getCurrencyFormatter($options);
     }
+
+    // ======================= cell
+
+    /**
+     * @param float|string|null                     $x  X position (may be percentage). If null, use current cursor position.
+     * @param float|string|null                     $y  Y position (may be percentage). If null, use current cursor position.
+     * @param float|string|null                     $w  Cell width  (may be percentage). If null, use right margin.
+     * @param float|string|null                     $h  Cell height (may be percentage). If null, use bottom margin
+     * @param string                                $txt
+     * @param \Relaxsd\Stylesheets\Style|array|null $style
+     *
+     * @return $this
+     */
+    public function cell($x = null, $y = null, $w = null, $h = null, $txt = '', $style = null)
+    {
+        if (!isset($x)) $x = $this->getCursorX();
+        if (!isset($y)) $y = $this->getCursorY();
+        if (!isset($w)) $w = $this->getInnerWidth() - $x;
+        if (!isset($h)) $h = $this->getInnerHeight() - $y;
+
+        $style = Style::merged($this->getStyle('body'), $this->getStyle('cell'), $style);
+
+        $originalY    = $this->pdf->getCursorY();
+        $originalPage = $this->pdf->getPage();
+
+        $this->pdf->cell(
+            $this->moveToGlobal_h($x),
+            $this->moveToGlobal_v($y),
+            $this->scaleToGlobal_h($w),
+            $this->scaleToGlobal_v($h),
+            $txt,
+            $this->scaledStyle($style)
+        );
+
+        // If a automatic page-break is detected, move the entire view accordingly
+        $newPage = $this->pdf->getPage();
+
+        if ($newPage != $originalPage) {
+
+            // TODO: Maybe just use the inner page height? The view moved one page backwards?
+            $newY = $this->pdf->getCursorY();
+
+            // For Multiline cells, assume 'bottom left' cursor placement, else 'top right'
+            $default         = Style::value($style, Multiline::ATTRIBUTE, false) ? CursorPlacement::CURSOR_BOTTOM_LEFT : CursorPlacement::CURSOR_TOP_RIGHT;
+            $cursorPlacement = Style::value($style, CursorPlacement::ATTRIBUTE, $default);
+
+            if ($cursorPlacement === CursorPlacement::CURSOR_BOTTOM_LEFT || $cursorPlacement === CursorPlacement::CURSOR_BOTTOM_RIGHT || $cursorPlacement === CursorPlacement::CURSOR_NEWLINE) {
+                // If the cursor is at the bottom of the cell, subtract the cell height to determine
+                // where the cell would have started on the new page.
+                $newY -= $this->scaleToGlobal_v($h);
+            }
+
+            // Then move our view up accordingly.
+            $this->y += $newY - $originalY;
+
+        }
+
+        return $this;
+    }
+
 
 }

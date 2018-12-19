@@ -2,7 +2,7 @@
 
 namespace Relaxsd\Pdflax\Contracts;
 
-interface PdfDocumentInterface extends PdfDOMInterface, PdfMarginInterface, PdfFormattingInterface, PdfStyleInterface
+interface PdfDocumentInterface extends PdfCellInterface, PdfDOMInterface, PdfMarginInterface, PdfFormattingInterface, PdfStyleInterface
 {
 
     /**
@@ -113,16 +113,6 @@ interface PdfDocumentInterface extends PdfDOMInterface, PdfMarginInterface, PdfF
      * @return $this
      */
     public function moveCursorY($d);
-
-    /**
-     * @param float|string              $w
-     * @param float|string              $h
-     * @param string                    $txt
-     * @param \Relaxsd\Stylesheets\Style|array|null $style
-     *
-     * @return $this
-     */
-    public function cell($w, $h = 0.0, $txt = '', $style = null);
 
     /**
      * @param     $auto

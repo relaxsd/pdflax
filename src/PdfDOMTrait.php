@@ -11,7 +11,7 @@ trait PdfDOMTrait
 {
 
     /**
-     * @param string       $caption
+     * @param string                           $caption
      * @param \Relaxsd\Stylesheets\Style|array $style
      *
      * @return $this
@@ -20,15 +20,12 @@ trait PdfDOMTrait
     {
         $style = Style::merged($this->getStyle('h1'), $style);
 
-        $this->setCursorX(0);
-
-        $width = $this->getInnerWidth();
-
-        return $this->cell($width, 8, $caption, $style);
+        // TODO: Hardcoded height
+        return $this->cell(0, null, '100%', 8, $caption, $style);
     }
 
     /**
-     * @param string       $caption
+     * @param string                           $caption
      * @param \Relaxsd\Stylesheets\Style|array $style
      *
      * @return $this
@@ -37,16 +34,12 @@ trait PdfDOMTrait
     {
         $style = Style::merged($this->getStyle('h2'), $style);
 
-        $this->setCursorX(0);
-
-        $width = $this->getInnerWidth();
-
-        // TODO: Use $this->fpdf->FontSizePt?
-        return $this->cell($width, 8, $caption, $style);
+        // TODO: Hardcoded height
+        return $this->cell(0, null, '100%', 8, $caption, $style);
     }
 
     /**
-     * @param string       $text
+     * @param string                           $text
      * @param \Relaxsd\Stylesheets\Style|array $style
      *
      * @return $this
@@ -55,12 +48,8 @@ trait PdfDOMTrait
     {
         $style = Style::merged($this->getStyle('p'), $style);
 
-        $this->setCursorX(0);
-
-        $width = $this->getInnerWidth();
-
-        // TODO: Use $this->fpdf->FontSizePt?
-        return $this->cell($width, 6, $text, $style);
+        // TODO: Hardcoded height
+        return $this->cell(0, null, '100%', 6, $text, $style);
     }
 
 }

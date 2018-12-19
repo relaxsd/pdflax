@@ -470,9 +470,9 @@ class PdfViewTest extends TestCase
         $this->pdfMock
             ->expects($this->once())
             ->method('cell')
-            ->with(25 * 10 / 100, 50 * 20 / 100, 'text', new Style(['font-size' => 32]));
+            ->with(10 + 5 * 25/100, 20 + 7 * 50/100, 10 * 25/100, 20 * 50/100, 'text', new Style(['font-size' => 32]));
 
-        $self = $this->pdfView->cell(10, 20, 'text', ['font-size' => 8]);
+        $self = $this->pdfView->cell(5, 7, 10, 20, 'text', ['font-size' => 8]);
 
         // Assert fluent interface
         $this->assertSame($this->pdfView, $self);
@@ -564,6 +564,69 @@ class PdfViewTest extends TestCase
         $this->assertSame($this->pdfView, $self);
 
         $this->assertEquals($this->pdfView->getBottomMargin(), 12.5);
+    }
+
+    // ------------------ DOM (PdfDOMInterface)
+
+    /**
+     * @test
+     */
+    public function it_writes_a_paragraph()
+    {
+
+        $this->pdfMock->expects($this->exactly(2))->method('cell')->withConsecutive(
+            [10.0, 50.0, 25.0, 3.0, 'text', new Style()],
+            [10.0, 50.0, 25.0, 3.0, 'text', new Style(['name' => 'value'])]
+        );
+
+        // With mandatory params only
+        $self = $this->pdfView->p('text');
+        $this->assertSame($this->pdfView, $self);         // Assert fluent interface
+
+        // With new style
+        $self = $this->pdfView->p('text', ['name' => 'value']);
+        $this->assertSame($this->pdfView, $self);         // Assert fluent interface
+    }
+
+    /**
+     * @test
+     */
+    public function it_writes_a_heading_1()
+    {
+
+        $this->pdfMock->expects($this->exactly(2))->method('cell')->withConsecutive(
+            [10.0, 50.0, 25.0, 4.0, 'caption', new Style()],
+            [10.0, 50.0, 25.0, 4.0, 'caption', new Style(['name' => 'value'])]
+        );
+
+        // With mandatory params only
+        $self = $this->pdfView->h1('caption');
+        $this->assertSame($this->pdfView, $self);         // Assert fluent interface
+
+        // With new style
+        $self = $this->pdfView->h1('caption', ['name' => 'value']);
+        $this->assertSame($this->pdfView, $self);         // Assert fluent interface
+    }
+
+    /**
+     * @test
+     */
+    public function it_writes_a_heading_2()
+    {
+
+        $this->pdfMock->expects($this->exactly(2))->method('cell')->withConsecutive(
+            [10.0, 50.0, 25.0, 4.0, 'caption', new Style()],
+            [10.0, 50.0, 25.0, 4.0, 'caption', new Style(['name' => 'value'])]
+        );
+
+        // With mandatory params only
+        $self = $this->pdfView->h2('caption');
+        $this->assertSame($this->pdfView, $self);         // Assert fluent interface
+
+        // With new style
+        $self = $this->pdfView->h2('caption', ['name' => 'value']);
+        $this->assertSame($this->pdfView, $self);         // Assert fluent interface
+
     }
 
 }
