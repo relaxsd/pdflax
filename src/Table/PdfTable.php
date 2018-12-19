@@ -3,6 +3,7 @@
 namespace Relaxsd\Pdflax\Table;
 
 use Relaxsd\Pdflax\PdfView;
+use Relaxsd\Stylesheets\Attributes\CursorPlacement;
 use Relaxsd\Stylesheets\Stylesheet;
 
 class PdfTable extends PdfView
@@ -15,10 +16,10 @@ class PdfTable extends PdfView
         ],
 
         'cell' => [
-            'align'  => 'left',
-            'height' => '8',
-            'ln'     => 0,
-            'border' => 0,
+            'align'                    => 'left',
+            'height'                   => '8',
+            CursorPlacement::ATTRIBUTE => CursorPlacement::CURSOR_TOP_RIGHT,
+            'border'                   => 0,
         ],
 
     ];
