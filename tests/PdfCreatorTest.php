@@ -1,7 +1,7 @@
 <?php
 
-use Relaxsd\Pdflax\Contracts\PdfCreatorOptionsInterface as Options;
 use PHPUnit\Framework\TestCase;
+use Relaxsd\Pdflax\Contracts\PdfCreatorOptionsInterface as Options;
 use Relaxsd\Stylesheets\Attributes\PageOrientation;
 use Relaxsd\Stylesheets\Attributes\PageSize;
 
@@ -48,10 +48,10 @@ class PdfCreatorTest extends TestCase
     public function it_sets_portrait_and_landscape()
     {
         $this->stub->portrait();
-        $this->assertEquals($this->stub->getOption('orientation'), Options::ORIENTATION_PORTRAIT);
+        $this->assertEquals($this->stub->getOption('orientation'), PageOrientation::PORTRAIT);
 
         $this->stub->landscape();
-        $this->assertEquals($this->stub->getOption('orientation'), Options::ORIENTATION_LANDSCAPE);
+        $this->assertEquals($this->stub->getOption('orientation'), PageOrientation::LANDSCAPE);
     }
 
     /**
@@ -81,7 +81,7 @@ class PdfCreatorTest extends TestCase
     public function it_sets_pagesize()
     {
         $this->stub->pageSizeA4();
-        $this->assertEquals($this->stub->getOption('size'), Options::SIZE_A4);
+        $this->assertEquals($this->stub->getOption('size'), PageSize::A4);
 
         $this->stub->withPageSize('A6');
         $this->assertEquals($this->stub->getOption('size'), 'A6');

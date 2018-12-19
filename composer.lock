@@ -12,7 +12,7 @@
             "source": {
                 "type": "git",
                 "url": "ssh://git@git.relax-software.nl:31422/git/relaxsd/php-stylesheets.git",
-                "reference": "0fe5ccbf26324ac22ac865ce0f987f67c2fa89f9"
+                "reference": "ced139d0183805e52821c2f5d527a8f2d0a67c32"
             },
             "require": {
                 "php": ">=5.4.0"
@@ -37,7 +37,7 @@
                 }
             ],
             "description": "Some stylesheet classes for PHP.",
-            "time": "2018-12-17T18:41:52+00:00"
+            "time": "2018-12-19T00:58:08+00:00"
         }
     ],
     "packages-dev": [

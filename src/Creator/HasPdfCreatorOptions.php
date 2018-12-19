@@ -124,7 +124,7 @@ trait HasPdfCreatorOptions
      */
     public function pageSizeA4()
     {
-        $this->options['size'] = PageSize::SIZE_A4;
+        $this->options['size'] = PageSize::A4;
 
         return $this;
     }
