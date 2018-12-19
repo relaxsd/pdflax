@@ -388,15 +388,15 @@ class PdfViewTest extends TestCase
             ->method('addPage')
             ->withConsecutive(
                 [],
-                [PageOrientation::ORIENTATION_LANDSCAPE],
+                [PageOrientation::LANDSCAPE],
                 [null, PageSize::SIZE_A4],
-                [PageOrientation::ORIENTATION_PORTRAIT, [100, 200]]
+                [PageOrientation::PORTRAIT, [100, 200]]
             );
 
         $self = $this->pdfView->addPage();
-        $this->pdfView->addPage(PageOrientation::ORIENTATION_LANDSCAPE);
+        $this->pdfView->addPage(PageOrientation::LANDSCAPE);
         $this->pdfView->addPage(null, PageSize::SIZE_A4);
-        $this->pdfView->addPage(PageOrientation::ORIENTATION_PORTRAIT, [100, 200]);
+        $this->pdfView->addPage(PageOrientation::PORTRAIT, [100, 200]);
 
         // Assert fluent interface
         $this->assertSame($this->pdfView, $self);

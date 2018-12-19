@@ -52,7 +52,7 @@ trait HasPdfCreatorOptions
      */
     public function portrait()
     {
-        $this->options['orientation'] = PageOrientation::ORIENTATION_PORTRAIT;
+        $this->options['orientation'] = PageOrientation::PORTRAIT;
 
         return $this;
     }
@@ -62,7 +62,7 @@ trait HasPdfCreatorOptions
      */
     public function landscape()
     {
-        $this->options['orientation'] = PageOrientation::ORIENTATION_LANDSCAPE;
+        $this->options['orientation'] = PageOrientation::LANDSCAPE;
 
         return $this;
     }
