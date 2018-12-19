@@ -3,6 +3,7 @@
 namespace Relaxsd\Pdflax\Table;
 
 use Relaxsd\Pdflax\PdfStyleTrait;
+use Relaxsd\Stylesheets\Attributes\FillColor;
 use Relaxsd\Stylesheets\Style;
 use Relaxsd\Stylesheets\Stylesheet;
 
@@ -21,16 +22,16 @@ class PdfTableRow
 
         // Default table cell styles
         'th' => [
-            'border'     => 1,
-            'font-style' => 'bold',
-            'fill'       => 1,
-            'fill-color' => 200,
+            'border'             => 1,
+            'font-style'         => 'bold',
+            'fill'               => 1,
+            FillColor::ATTRIBUTE => 200,
         ],
 
         'td' => [
-            'border'     => 1,
-            'fill'       => 0,
-            'fill-color' => 0
+            'border'             => 1,
+            'fill'               => 0,
+            FillColor::ATTRIBUTE => 0
         ]
 
     ];
