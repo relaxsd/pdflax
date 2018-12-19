@@ -478,6 +478,40 @@ class PdfViewTest extends TestCase
         $this->assertSame($this->pdfView, $self);
     }
 
+    // ------------------ Fonts
+
+    /**
+     * @test
+     */
+    public function it_sets_a_font_path()
+    {
+        $this->pdfMock
+            ->expects($this->once())
+            ->method('setFontPath')
+            ->with('path');
+
+        $self = $this->pdfView->setFontPath('path');
+
+        // Assert fluent interface
+        $this->assertSame($this->pdfView, $self);
+    }
+
+    /**
+     * @test
+     */
+    public function it_registers_a_font()
+    {
+        $this->pdfMock
+            ->expects($this->once())
+            ->method('registerFont')
+            ->with('family', 'style', 'filename');
+
+        $self = $this->pdfView->registerFont('family', 'style', 'filename');
+
+        // Assert fluent interface
+        $this->assertSame($this->pdfView, $self);
+    }
+
     // ------------------ Margins (PdfMarginInterface, PdfMarginTrait)
 
     /**

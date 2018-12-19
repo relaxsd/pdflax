@@ -611,7 +611,7 @@ class PdfView implements PdfDocumentInterface
      */
     public function setFontPath($path)
     {
-        $this->fpdf->setFontPath($path);
+        $this->pdf->setFontPath($path);
 
         return $this;
     }
@@ -625,7 +625,7 @@ class PdfView implements PdfDocumentInterface
      */
     public function registerFont($family, $style, $filename)
     {
-        $this->fpdf->registerFont($family, $style, $filename);
+        $this->pdf->registerFont($family, $style, $filename);
 
         return $this;
     }
