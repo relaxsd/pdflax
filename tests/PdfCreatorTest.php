@@ -2,6 +2,7 @@
 
 use Relaxsd\Pdflax\Contracts\PdfCreatorOptionsInterface as Options;
 use PHPUnit\Framework\TestCase;
+use Relaxsd\Stylesheets\Attributes\PageOrientation;
 
 class PdfCreatorTest extends TestCase
 {

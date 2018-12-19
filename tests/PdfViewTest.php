@@ -4,6 +4,7 @@ use PHPUnit\Framework\TestCase;
 use Relaxsd\Pdflax\Contracts\CurrencyFormatterInterface;
 use Relaxsd\Pdflax\Contracts\PdfCreatorOptionsInterface;
 use Relaxsd\Pdflax\PdfView;
+use Relaxsd\Stylesheets\Attributes\PageOrientation;
 use Relaxsd\Stylesheets\Style;
 use Relaxsd\Stylesheets\Stylesheet;
 
@@ -386,15 +387,15 @@ class PdfViewTest extends TestCase
             ->method('addPage')
             ->withConsecutive(
                 [],
-                [PdfCreatorOptionsInterface::ORIENTATION_LANDSCAPE],
+                [PageOrientation::ORIENTATION_LANDSCAPE],
                 [null, PdfCreatorOptionsInterface::SIZE_A4],
-                [PdfCreatorOptionsInterface::ORIENTATION_PORTRAIT, [100, 200]]
+                [PageOrientation::ORIENTATION_PORTRAIT, [100, 200]]
             );
 
         $self = $this->pdfView->addPage();
-        $this->pdfView->addPage(PdfCreatorOptionsInterface::ORIENTATION_LANDSCAPE);
+        $this->pdfView->addPage(PageOrientation::ORIENTATION_LANDSCAPE);
         $this->pdfView->addPage(null, PdfCreatorOptionsInterface::SIZE_A4);
-        $this->pdfView->addPage(PdfCreatorOptionsInterface::ORIENTATION_PORTRAIT, [100, 200]);
+        $this->pdfView->addPage(PageOrientation::ORIENTATION_PORTRAIT, [100, 200]);
 
         // Assert fluent interface
         $this->assertSame($this->pdfView, $self);

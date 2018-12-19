@@ -5,9 +5,6 @@ namespace Relaxsd\Pdflax\Contracts;
 interface PdfCreatorOptionsInterface
 {
 
-    const ORIENTATION_PORTRAIT = 'portrait';
-    const ORIENTATION_LANDSCAPE = 'landscape';
-
     const UNIT_PT = 'pt';
     const UNIT_MM = 'mm';
     const UNIT_CM = 'cm';

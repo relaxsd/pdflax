@@ -3,6 +3,7 @@
 namespace Relaxsd\Pdflax\Creator;
 
 use Relaxsd\Pdflax\Contracts\PdfCreatorOptionsInterface;
+use Relaxsd\Stylesheets\Attributes\PageOrientation;
 
 trait HasPdfCreatorOptions
 {
@@ -50,7 +51,7 @@ trait HasPdfCreatorOptions
      */
     public function portrait()
     {
-        $this->options['orientation'] = PdfCreatoroptionsInterface::ORIENTATION_PORTRAIT;
+        $this->options['orientation'] = PageOrientation::ORIENTATION_PORTRAIT;
 
         return $this;
     }
@@ -60,7 +61,7 @@ trait HasPdfCreatorOptions
      */
     public function landscape()
     {
-        $this->options['orientation'] = PdfCreatorOptionsInterface::ORIENTATION_LANDSCAPE;
+        $this->options['orientation'] = PageOrientation::ORIENTATION_LANDSCAPE;
 
         return $this;
     }
