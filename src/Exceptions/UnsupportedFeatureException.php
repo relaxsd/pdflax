@@ -2,6 +2,6 @@
 
 namespace Relaxsd\Pdflax\Exceptions;
 
-class UnsupportedFeatureException extends \Exception
+class UnsupportedFeatureException extends \RuntimeException
 {
 }

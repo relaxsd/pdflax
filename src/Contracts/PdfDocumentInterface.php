@@ -137,7 +137,6 @@ interface PdfDocumentInterface extends PdfDOMInterface, PdfMarginInterface, PdfF
      * @param string|null $size
      *
      * @return $this
-     * @throws \Relaxsd\Pdflax\Exceptions\UnsupportedFeatureException
      */
     public function addPage($orientation = null, $size = null);
 
