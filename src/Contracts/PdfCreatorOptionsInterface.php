@@ -10,8 +10,6 @@ interface PdfCreatorOptionsInterface
     const UNIT_CM = 'cm';
     const UNIT_INCH = 'inch';
 
-    const SIZE_A4 = 'A4';
-
     /**
      * @param string $name
      * @param mixed $value

@@ -4,6 +4,7 @@ namespace Relaxsd\Pdflax\Creator;
 
 use Relaxsd\Pdflax\Contracts\PdfCreatorOptionsInterface;
 use Relaxsd\Stylesheets\Attributes\PageOrientation;
+use Relaxsd\Stylesheets\Attributes\PageSize;
 
 trait HasPdfCreatorOptions
 {
@@ -123,7 +124,7 @@ trait HasPdfCreatorOptions
      */
     public function pageSizeA4()
     {
-        $this->options['size'] = PdfCreatoroptionsInterface::SIZE_A4;
+        $this->options['size'] = PageSize::SIZE_A4;
 
         return $this;
     }
