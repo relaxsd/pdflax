@@ -3,6 +3,7 @@
 namespace Relaxsd\Pdflax;
 
 use Relaxsd\Pdflax\Contracts\PdfDocumentInterface;
+use Relaxsd\Pdflax\Contracts\PdfOutputInterface;
 use Relaxsd\Stylesheets\Attributes\CursorPlacement;
 use Relaxsd\Stylesheets\Attributes\Multiline;
 use Relaxsd\Stylesheets\Style;
@@ -638,7 +639,7 @@ class PdfView implements PdfDocumentInterface
         return $this->pdf->getCurrencyFormatter($options);
     }
 
-    // ======================= cell
+    // ======================= Output (cell, text)
 
     /**
      * @param float|string|null                     $x  X position (may be percentage). If null, use current cursor position.
@@ -697,5 +698,24 @@ class PdfView implements PdfDocumentInterface
         return $this;
     }
 
+    /**
+     * @param float|string|null                     $h Text height (may be percentage). If null, use bottom margin
+     * @param string                                $txt
+     * @param \Relaxsd\Stylesheets\Style|array|null $style
+     * @param array                                 $options
+     *
+     * @return $this
+     */
+    public function text($h = null, $txt = '', $style = null, $options=[])
+    {
+        $this->pdf->text(
+            $this->scaleToGlobal_v($h),
+            $txt,
+            $this->scaledStyle($style),
+            $options
+        );
+
+        return $this;
+    }
 
 }

@@ -2,7 +2,7 @@
 
 namespace Relaxsd\Pdflax\Contracts;
 
-interface PdfDocumentInterface extends PdfCellInterface, PdfDOMInterface, PdfMarginInterface, PdfFormattingInterface, PdfStyleInterface
+interface PdfDocumentInterface extends PdfOutputInterface, PdfDOMInterface, PdfMarginInterface, PdfFormattingInterface, PdfStyleInterface
 {
 
     /**

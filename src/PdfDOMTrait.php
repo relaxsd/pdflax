@@ -52,4 +52,18 @@ trait PdfDOMTrait
         return $this->cell(0, null, '100%', 6, $text, $style);
     }
 
+    /**
+     * @param string                           $text
+     * @param string                           $href
+     * @param \Relaxsd\Stylesheets\Style|array $style
+     *
+     * @return $this
+     */
+    public function a($text = '', $href = '', $style = null)
+    {
+        $style = Style::merged($this->getStyle('a'), $style);
+
+        // TODO: Hardcoded height
+        return $this->text(6, $text, $style, ['href' => $href]);
+    }
 }
