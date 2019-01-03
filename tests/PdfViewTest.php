@@ -470,9 +470,9 @@ class PdfViewTest extends TestCase
         $this->pdfMock
             ->expects($this->once())
             ->method('cell')
-            ->with(10 + 5 * 25 / 100, 20 + 7 * 50 / 100, 10 * 25 / 100, 20 * 50 / 100, 'text', new Style(['font-size' => 32]));
+            ->with(10 + 5 * 25 / 100, 20 + 7 * 50 / 100, 10 * 25 / 100, 20 * 50 / 100, 'text', new Style(['font-size' => 32]), [ 'option' => 'option-value' ]);
 
-        $self = $this->pdfView->cell(5, 7, 10, 20, 'text', ['font-size' => 8]);
+        $self = $this->pdfView->cell(5, 7, 10, 20, 'text', ['font-size' => 8], [ 'option' => 'option-value' ]);
 
         // Assert fluent interface
         $this->assertSame($this->pdfView, $self);

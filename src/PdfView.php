@@ -648,10 +648,11 @@ class PdfView implements PdfDocumentInterface
      * @param float|string|null                     $h  Cell height (may be percentage). If null, use bottom margin
      * @param string                                $txt
      * @param \Relaxsd\Stylesheets\Style|array|null $style
+     * @param array                                 $options
      *
      * @return $this
      */
-    public function cell($x = null, $y = null, $w = null, $h = null, $txt = '', $style = null)
+    public function cell($x = null, $y = null, $w = null, $h = null, $txt = '', $style = null, $options = [])
     {
         if (!isset($x)) $x = $this->getCursorX();
         if (!isset($y)) $y = $this->getCursorY();
@@ -669,7 +670,8 @@ class PdfView implements PdfDocumentInterface
             $this->scaleToGlobal_h($w),
             $this->scaleToGlobal_v($h),
             $txt,
-            $this->scaledStyle($style)
+            $this->scaledStyle($style),
+            $options
         );
 
         // If a automatic page-break is detected, move the entire view accordingly

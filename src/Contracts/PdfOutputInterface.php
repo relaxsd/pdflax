@@ -12,10 +12,11 @@ interface PdfOutputInterface
      * @param float|string|null                     $h Cell height (may be percentage). If null, use bottom margin
      * @param string                                $txt
      * @param \Relaxsd\Stylesheets\Style|array|null $style
+     * @param array                                 $options
      *
      * @return $this
      */
-    public function cell($x = null, $y = null, $w = null, $h = null, $txt = '', $style = null);
+    public function cell($x = null, $y = null, $w = null, $h = null, $txt = '', $style = null, $options = []);
 
     /**
      * @param float|string|null                     $h Text height (may be percentage). If null, use bottom margin
