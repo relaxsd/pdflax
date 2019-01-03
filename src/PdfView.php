@@ -648,10 +648,11 @@ class PdfView implements PdfDocumentInterface
      * @param float|string|null                     $h  Cell height (may be percentage). If null, use bottom margin
      * @param string                                $txt
      * @param \Relaxsd\Stylesheets\Style|array|null $style
+     * @param array                                 $options
      *
      * @return $this
      */
-    public function cell($x = null, $y = null, $w = null, $h = null, $txt = '', $style = null)
+    public function cell($x = null, $y = null, $w = null, $h = null, $txt = '', $style = null, $options = [])
     {
         if (!isset($x)) $x = $this->getCursorX();
         if (!isset($y)) $y = $this->getCursorY();
@@ -669,7 +670,8 @@ class PdfView implements PdfDocumentInterface
             $this->scaleToGlobal_h($w),
             $this->scaleToGlobal_v($h),
             $txt,
-            $this->scaledStyle($style)
+            $this->scaledStyle($style),
+            $options
         );
 
         // If a automatic page-break is detected, move the entire view accordingly
@@ -681,10 +683,10 @@ class PdfView implements PdfDocumentInterface
             $newY = $this->pdf->getCursorY();
 
             // For Multiline cells, assume 'bottom left' cursor placement, else 'top right'
-            $default         = Style::value($style, Multiline::ATTRIBUTE, false) ? CursorPlacement::CURSOR_BOTTOM_LEFT : CursorPlacement::CURSOR_TOP_RIGHT;
+            $default         = Style::value($style, Multiline::ATTRIBUTE, false) ? CursorPlacement::BOTTOM_LEFT : CursorPlacement::TOP_RIGHT;
             $cursorPlacement = Style::value($style, CursorPlacement::ATTRIBUTE, $default);
 
-            if ($cursorPlacement === CursorPlacement::CURSOR_BOTTOM_LEFT || $cursorPlacement === CursorPlacement::CURSOR_BOTTOM_RIGHT || $cursorPlacement === CursorPlacement::CURSOR_NEWLINE) {
+            if ($cursorPlacement === CursorPlacement::BOTTOM_LEFT || $cursorPlacement === CursorPlacement::BOTTOM_RIGHT || $cursorPlacement === CursorPlacement::NEWLINE) {
                 // If the cursor is at the bottom of the cell, subtract the cell height to determine
                 // where the cell would have started on the new page.
                 $newY -= $this->scaleToGlobal_v($h);

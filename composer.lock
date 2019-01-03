@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "43dc7efd6494e21e976e37de375cb4ec",
+    "content-hash": "6cb8fcb6582f22475561fca67f9d12d0",
     "packages": [
         {
             "name": "relaxsd/php-stylesheets",
-            "version": "v2.0.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/relaxsd/php-stylesheets.git",
-                "reference": "a1472daa479474aeba21dc8895487e5ee864e67c"
+                "reference": "4f8451a659fc27ab2185e710797074074e6716a4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/relaxsd/php-stylesheets/zipball/a1472daa479474aeba21dc8895487e5ee864e67c",
-                "reference": "a1472daa479474aeba21dc8895487e5ee864e67c",
+                "url": "https://api.github.com/repos/relaxsd/php-stylesheets/zipball/4f8451a659fc27ab2185e710797074074e6716a4",
+                "reference": "4f8451a659fc27ab2185e710797074074e6716a4",
                 "shasum": ""
             },
             "require": {
@@ -27,6 +27,11 @@
                 "phpunit/phpunit": "^4"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.1-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "Relaxsd\\Stylesheets\\": "src/"
@@ -43,7 +48,7 @@
                 }
             ],
             "description": "Some stylesheet classes for PHP.",
-            "time": "2019-01-03T14:40:09+00:00"
+            "time": "2019-01-03T21:11:10+00:00"
         }
     ],
     "packages-dev": [
@@ -1228,7 +1233,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "relaxsd/php-stylesheets": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

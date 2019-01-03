@@ -11,7 +11,7 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "relaxsd/php-stylesheets": "^2.0.0"
+        "relaxsd/php-stylesheets": "^2.1@dev"
     },
     "require-dev": {
         "phpunit/phpunit": "^4"
@@ -19,6 +19,11 @@
     "autoload": {
         "psr-4": {
             "Relaxsd\\Pdflax\\": "src"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.9-dev"
         }
     }
 }

@@ -20,7 +20,7 @@ class PdfTable extends PdfView
         'cell' => [
             Align::ATTRIBUTE           => Align::LEFT,
             'height'                   => '8',
-            CursorPlacement::ATTRIBUTE => CursorPlacement::CURSOR_TOP_RIGHT,
+            CursorPlacement::ATTRIBUTE => CursorPlacement::TOP_RIGHT,
             Border::BORDER             => false,
         ],
 
