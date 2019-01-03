@@ -4,15 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "86b80e667bec71cfcf31ac0106b4fcdc",
+    "content-hash": "43dc7efd6494e21e976e37de375cb4ec",
     "packages": [
         {
             "name": "relaxsd/php-stylesheets",
-            "version": "dev-master",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
-                "url": "ssh://git@git.relax-software.nl:31422/git/relaxsd/php-stylesheets.git",
-                "reference": "ced139d0183805e52821c2f5d527a8f2d0a67c32"
+                "url": "https://github.com/relaxsd/php-stylesheets.git",
+                "reference": "a1472daa479474aeba21dc8895487e5ee864e67c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/relaxsd/php-stylesheets/zipball/a1472daa479474aeba21dc8895487e5ee864e67c",
+                "reference": "a1472daa479474aeba21dc8895487e5ee864e67c",
+                "shasum": ""
             },
             "require": {
                 "php": ">=5.4.0"
@@ -26,7 +32,7 @@
                     "Relaxsd\\Stylesheets\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.relax-software.nl/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -37,7 +43,7 @@
                 }
             ],
             "description": "Some stylesheet classes for PHP.",
-            "time": "2018-12-19T00:58:08+00:00"
+            "time": "2019-01-03T14:40:09+00:00"
         }
     ],
     "packages-dev": [
@@ -1222,9 +1228,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "relaxsd/php-stylesheets": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
