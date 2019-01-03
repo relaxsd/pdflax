@@ -1,16 +1,9 @@
 <?php
 
-namespace Pdflax\Contracts;
+namespace Relaxsd\Pdflax\Contracts;
 
-interface PdfDOMInterface extends PdfStyleInterface
+interface PdfDOMInterface
 {
-
-    /**
-     * @param float $value
-     *
-     * @return string
-     */
-    public function euro($value);
 
     /**
      * @param string       $caption
