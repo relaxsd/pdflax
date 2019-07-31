@@ -3,7 +3,6 @@
 namespace Relaxsd\Pdflax;
 
 use Relaxsd\Pdflax\Contracts\PdfDocumentInterface;
-use Relaxsd\Pdflax\Contracts\PdfOutputInterface;
 use Relaxsd\Stylesheets\Attributes\CursorPlacement;
 use Relaxsd\Stylesheets\Attributes\Multiline;
 use Relaxsd\Stylesheets\Style;

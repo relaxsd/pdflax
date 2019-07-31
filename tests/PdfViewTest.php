@@ -2,7 +2,10 @@
 
 use PHPUnit\Framework\TestCase;
 use Relaxsd\Pdflax\Contracts\CurrencyFormatterInterface;
+use Relaxsd\Pdflax\Helpers\Converter;
 use Relaxsd\Pdflax\PdfView;
+use Relaxsd\Stylesheets\Attributes\FontSize;
+use Relaxsd\Stylesheets\Attributes\LineHeight;
 use Relaxsd\Stylesheets\Attributes\PageOrientation;
 use Relaxsd\Stylesheets\Attributes\PageSize;
 use Relaxsd\Stylesheets\Style;
@@ -590,9 +593,11 @@ class PdfViewTest extends TestCase
     public function it_writes_a_paragraph()
     {
 
+        $lineHeightMm = 0.5 /* vertical view ratio */ * 1.2 * LineHeight::DEFAULT_VALUE * Converter::points_to_mm(FontSize::DEFAULT_VALUE);
+
         $this->pdfMock->expects($this->exactly(2))->method('cell')->withConsecutive(
-            [10.0, 50.0, 25.0, 3.0, 'text', new Style()],
-            [10.0, 50.0, 25.0, 3.0, 'text', new Style(['name' => 'value'])]
+            [10.0, 50.0, 25.0, $lineHeightMm, 'text', new Style()],
+            [10.0, 50.0, 25.0, $lineHeightMm, 'text', new Style(['name' => 'value'])]
         );
 
         // With mandatory params only
@@ -610,9 +615,11 @@ class PdfViewTest extends TestCase
     public function it_writes_a_heading_1()
     {
 
+        $lineHeightMm = 0.5 /* vertical view ratio */ * 1.2 * LineHeight::DEFAULT_VALUE * Converter::points_to_mm(FontSize::DEFAULT_VALUE);
+
         $this->pdfMock->expects($this->exactly(2))->method('cell')->withConsecutive(
-            [10.0, 50.0, 25.0, 4.0, 'caption', new Style()],
-            [10.0, 50.0, 25.0, 4.0, 'caption', new Style(['name' => 'value'])]
+            [10.0, 50.0, 25.0, $lineHeightMm, 'caption', new Style()],
+            [10.0, 50.0, 25.0, $lineHeightMm, 'caption', new Style(['name' => 'value'])]
         );
 
         // With mandatory params only
@@ -630,9 +637,11 @@ class PdfViewTest extends TestCase
     public function it_writes_a_heading_2()
     {
 
+        $lineHeightMm = 0.5 /* vertical view ratio */ * 1.2 * LineHeight::DEFAULT_VALUE * Converter::points_to_mm(FontSize::DEFAULT_VALUE);
+
         $this->pdfMock->expects($this->exactly(2))->method('cell')->withConsecutive(
-            [10.0, 50.0, 25.0, 4.0, 'caption', new Style()],
-            [10.0, 50.0, 25.0, 4.0, 'caption', new Style(['name' => 'value'])]
+            [10.0, 50.0, 25.0, $lineHeightMm, 'caption', new Style()],
+            [10.0, 50.0, 25.0, $lineHeightMm, 'caption', new Style(['name' => 'value'])]
         );
 
         // With mandatory params only
@@ -641,6 +650,52 @@ class PdfViewTest extends TestCase
 
         // With new style
         $self = $this->pdfView->h2('caption', ['name' => 'value']);
+        $this->assertSame($this->pdfView, $self);         // Assert fluent interface
+
+    }
+
+    /**
+     * @test
+     */
+    public function it_writes_a_heading_3()
+    {
+
+        $lineHeightMm = 0.5 /* vertical view ratio */ * 1.2 * LineHeight::DEFAULT_VALUE * Converter::points_to_mm(FontSize::DEFAULT_VALUE);
+
+        $this->pdfMock->expects($this->exactly(2))->method('cell')->withConsecutive(
+            [10.0, 50.0, 25.0, $lineHeightMm, 'caption', new Style()],
+            [10.0, 50.0, 25.0, $lineHeightMm, 'caption', new Style(['name' => 'value'])]
+        );
+
+        // With mandatory params only
+        $self = $this->pdfView->h3('caption');
+        $this->assertSame($this->pdfView, $self);         // Assert fluent interface
+
+        // With new style
+        $self = $this->pdfView->h3('caption', ['name' => 'value']);
+        $this->assertSame($this->pdfView, $self);         // Assert fluent interface
+
+    }
+
+    /**
+     * @test
+     */
+    public function it_writes_a_heading_4()
+    {
+
+        $lineHeightMm = 0.5 /* vertical view ratio */ * 1.2 * LineHeight::DEFAULT_VALUE * Converter::points_to_mm(FontSize::DEFAULT_VALUE);
+
+        $this->pdfMock->expects($this->exactly(2))->method('cell')->withConsecutive(
+            [10.0, 50.0, 25.0, $lineHeightMm, 'caption', new Style()],
+            [10.0, 50.0, 25.0, $lineHeightMm, 'caption', new Style(['name' => 'value'])]
+        );
+
+        // With mandatory params only
+        $self = $this->pdfView->h4('caption');
+        $this->assertSame($this->pdfView, $self);         // Assert fluent interface
+
+        // With new style
+        $self = $this->pdfView->h4('caption', ['name' => 'value']);
         $this->assertSame($this->pdfView, $self);         // Assert fluent interface
 
     }

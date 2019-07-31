@@ -22,6 +22,22 @@ interface PdfDOMInterface
     public function h2($caption, $style = []);
 
     /**
+     * @param string       $caption
+     * @param array|string $style
+     *
+     * @return PdfDocumentInterface
+     */
+    public function h3($caption, $style = []);
+
+    /**
+     * @param string       $caption
+     * @param array|string $style
+     *
+     * @return PdfDocumentInterface
+     */
+    public function h4($caption, $style = []);
+
+    /**
      * @param string       $text
      * @param array|string $style
      *
