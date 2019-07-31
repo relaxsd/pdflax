@@ -1,24 +1,18 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "6cb8fcb6582f22475561fca67f9d12d0",
+    "content-hash": "34b2f4776c7ac93040deb12e4530005e",
     "packages": [
         {
             "name": "relaxsd/php-stylesheets",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/relaxsd/php-stylesheets.git",
-                "reference": "4f8451a659fc27ab2185e710797074074e6716a4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/relaxsd/php-stylesheets/zipball/4f8451a659fc27ab2185e710797074074e6716a4",
-                "reference": "4f8451a659fc27ab2185e710797074074e6716a4",
-                "shasum": ""
+                "url": "ssh://git@git.relax-software.nl:31422/git/relaxsd/php-stylesheets.git",
+                "reference": "80dbe4b2c7e543a00a2361b59681aef9aa3eef51"
             },
             "require": {
                 "php": ">=5.4.0"
@@ -37,7 +31,7 @@
                     "Relaxsd\\Stylesheets\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://packagist.relax-software.nl/downloads/",
             "license": [
                 "MIT"
             ],
@@ -48,7 +42,7 @@
                 }
             ],
             "description": "Some stylesheet classes for PHP.",
-            "time": "2019-01-03T21:11:10+00:00"
+            "time": "2019-07-31T14:27:34+00:00"
         }
     ],
     "packages-dev": [
@@ -689,6 +683,7 @@
                 "mock",
                 "xunit"
             ],
+            "abandoned": true,
             "time": "2015-10-02T06:51:40+00:00"
         },
         {

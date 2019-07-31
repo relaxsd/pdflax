@@ -2,6 +2,9 @@
 
 namespace Relaxsd\Pdflax;
 
+use Relaxsd\Pdflax\Helpers\Converter;
+use Relaxsd\Stylesheets\Attributes\FontSize;
+use Relaxsd\Stylesheets\Attributes\LineHeight;
 use Relaxsd\Stylesheets\Style;
 
 /**
@@ -20,8 +23,10 @@ trait PdfDOMTrait
     {
         $style = Style::merged($this->getStyle('h1'), $style);
 
-        // TODO: Hardcoded height
-        return $this->cell(0, null, '100%', 8, $caption, $style);
+        // Calculate the cell height (line height)
+        $lineHeightMm = $this->calculateLineHeight($style);
+
+        return $this->cell(0, null, '100%', $lineHeightMm, $caption, $style);
     }
 
     /**
@@ -34,8 +39,10 @@ trait PdfDOMTrait
     {
         $style = Style::merged($this->getStyle('h2'), $style);
 
-        // TODO: Hardcoded height
-        return $this->cell(0, null, '100%', 8, $caption, $style);
+        // Calculate the cell height (line height)
+        $lineHeightMm = $this->calculateLineHeight($style);
+
+        return $this->cell(0, null, '100%', $lineHeightMm, $caption, $style);
     }
 
     /**
@@ -48,8 +55,10 @@ trait PdfDOMTrait
     {
         $style = Style::merged($this->getStyle('h3'), $style);
 
-        // TODO: Hardcoded height
-        return $this->cell(0, null, '100%', 8, $caption, $style);
+        // Calculate the cell height (line height)
+        $lineHeightMm = $this->calculateLineHeight($style);
+
+        return $this->cell(0, null, '100%', $lineHeightMm, $caption, $style);
     }
 
     /**
@@ -62,8 +71,10 @@ trait PdfDOMTrait
     {
         $style = Style::merged($this->getStyle('h4'), $style);
 
-        // TODO: Hardcoded height
-        return $this->cell(0, null, '100%', 8, $caption, $style);
+        // Calculate the cell height (line height)
+        $lineHeightMm = $this->calculateLineHeight($style);
+
+        return $this->cell(0, null, '100%', $lineHeightMm, $caption, $style);
     }
 
     /**
@@ -76,8 +87,10 @@ trait PdfDOMTrait
     {
         $style = Style::merged($this->getStyle('p'), $style);
 
-        // TODO: Hardcoded height
-        return $this->cell(0, null, '100%', 6, $text, $style);
+        // Calculate the cell height (line height)
+        $lineHeightMm = $this->calculateLineHeight($style);
+
+        return $this->cell(0, null, '100%', $lineHeightMm, $text, $style);
     }
 
     /**
@@ -91,7 +104,19 @@ trait PdfDOMTrait
     {
         $style = Style::merged($this->getStyle('a'), $style);
 
-        // TODO: Hardcoded height
-        return $this->text(6, $text, $style, ['href' => $href]);
+        // Calculate the cell height (line height)
+        $lineHeightMm = $this->calculateLineHeight($style);
+
+        return $this->text($lineHeightMm, $text, $style, ['href' => $href]);
     }
+
+    protected function calculateLineHeight($style) {
+
+        // Calculate the cell height (line height)
+        $lineHeightFactor = Style::value($style, LineHeight::ATTRIBUTE, 1.2);
+        $fontSizePt = Style::value($style, FontSize::ATTRIBUTE, FontSize::DEFAULT_VALUE);
+
+        return $lineHeightFactor * Converter::points_to_mm($fontSizePt);
+    }
+
 }
