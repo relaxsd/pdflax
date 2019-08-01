@@ -4,15 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "34b2f4776c7ac93040deb12e4530005e",
+    "content-hash": "618384c30f45256192307c9486b8efc1",
     "packages": [
         {
             "name": "relaxsd/php-stylesheets",
-            "version": "dev-master",
+            "version": "v2.0.1",
             "source": {
                 "type": "git",
-                "url": "ssh://git@git.relax-software.nl:31422/git/relaxsd/php-stylesheets.git",
-                "reference": "80dbe4b2c7e543a00a2361b59681aef9aa3eef51"
+                "url": "https://github.com/relaxsd/php-stylesheets.git",
+                "reference": "9bdf2b267a1a2515d3458a67f6def0e68b14ad69"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/relaxsd/php-stylesheets/zipball/9bdf2b267a1a2515d3458a67f6def0e68b14ad69",
+                "reference": "9bdf2b267a1a2515d3458a67f6def0e68b14ad69",
+                "shasum": ""
             },
             "require": {
                 "php": ">=5.4.0"
@@ -31,7 +37,7 @@
                     "Relaxsd\\Stylesheets\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.relax-software.nl/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -42,7 +48,7 @@
                 }
             ],
             "description": "Some stylesheet classes for PHP.",
-            "time": "2019-07-31T14:27:34+00:00"
+            "time": "2019-08-01T19:41:54+00:00"
         }
     ],
     "packages-dev": [
@@ -1228,9 +1234,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "relaxsd/php-stylesheets": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
